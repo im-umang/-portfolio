@@ -1,78 +1,84 @@
-<<<<<<< HEAD
-# portfolio
-This repository contains my personal developer portfolio showcasing my skills, projects, and experience.  Built to highlight my journey as a software/web developer with clean UI and modern technologies.
-=======
-# Welcome to your Lovable project
+# 🚀 Personal Developer Portfolio
 
-## Project info
+This repository contains my personal developer portfolio website, built to showcase my skills, projects, and learning journey as a software/web developer.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+The portfolio features a modern UI, responsive design, and clean code structure using the latest frontend technologies.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use Lovable**
+- ⚡ Fast and optimized performance with Vite
+- 🎨 Modern UI with Tailwind CSS & shadcn-ui
+- 🌙 Dark theme & glassmorphism design
+- 📱 Fully responsive (mobile, tablet & desktop)
+- 🧩 Reusable and scalable components
+- 🛠️ Clean and maintainable TypeScript code
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🧑‍💻 Tech Stack
 
-**Use your preferred IDE**
+- **Frontend Framework:** React
+- **Build Tool:** Vite
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **UI Components:** shadcn-ui
+- **Package Manager:** npm / bun
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 📂 Project Structure
 
-Follow these steps:
+```bash
+├── public/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── assets/
+│   └── main.tsx
+├── index.html
+├── tailwind.config.ts
+├── vite.config.ts
+├── package.json
+└── README.md
+⚙️ Installation & Setup
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Clone the repository:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+git clone https://github.com/im-umang/-portfolio.git
 
-# Step 3: Install the necessary dependencies.
-npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+Navigate to the project directory:
+
+cd -portfolio
+
+
+Install dependencies:
+
+npm install
+
+
+Start the development server:
+
 npm run dev
-```
 
-**Edit a file directly in GitHub**
+🌐 Live Preview
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Deployment link will be added soon.
 
-**Use GitHub Codespaces**
+📌 Purpose
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+This portfolio is created to:
 
-## What technologies are used for this project?
+Showcase my frontend & web development skills
 
-This project is built with:
+Present my projects in a professional manner
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Use as a personal brand & placement portfolio
 
-## How can I deploy this project?
+🤝 Connect With Me
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+GitHub: https://github.com/im-umang
 
-## Can I connect a custom domain to my Lovable project?
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
->>>>>>> 4649de81 (feat: Upgrade portfolio to Extreme level with dark theme and glassmorphism)
