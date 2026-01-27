@@ -31,34 +31,33 @@ const Navbar = () => {
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="fixed top-0 w-full z-50 flex justify-center pt-4 px-4"
+            className="fixed top-0 w-full z-50 flex justify-center pt-2 sm:pt-4 px-2 sm:px-4"
         >
             <div
                 className={cn(
                     "w-full max-w-5xl rounded-full transition-all duration-300 border border-transparent",
                     scrolled
-                        ? "glass-strong py-2 px-6 shadow-2xl border-white/10"
-                        : "bg-transparent py-4 px-4"
+                        ? "glass-strong py-2 px-3 sm:px-4 md:px-6 shadow-2xl border-white/10"
+                        : "bg-transparent py-2 sm:py-3 md:py-4 px-3 sm:px-4"
                 )}
             >
                 <div className="flex justify-between items-center">
                     <div className="flex-shrink-0 flex items-center">
                         <Link
                             to="/"
-                            className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-white to-secondary hover:opacity-80 transition-opacity"
+                            className="text-lg sm:text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-white to-secondary hover:opacity-80 transition-opacity"
                         >
-                            <span className="text-gradient font-bold tracking-tighter">Portfolio </span>
+                            <span className="text-gradient font-bold tracking-tighter">Portfolio</span>
                         </Link>
                     </div>
 
-                    {/* Desktop Menu */}
-                    <div className="hidden md:flex items-center gap-2">
+                    <div className="hidden md:flex items-center gap-1 lg:gap-2">
                         {navLinks.map((link) => (
                             <a
                                 key={link.name}
                                 href={link.href}
                                 onClick={() => setActiveTab(link.name)}
-                                className="relative px-4 py-2 rounded-full text-sm font-medium transition-colors hover:text-white"
+                                className="relative px-3 lg:px-4 py-2 rounded-full text-xs lg:text-sm font-medium transition-colors hover:text-white"
                             >
                                 {activeTab === link.name && (
                                     <motion.div
@@ -77,40 +76,38 @@ const Navbar = () => {
                         ))}
                         <a
                             href="#contact"
-                            className="ml-4 px-6 py-2 rounded-full bg-primary text-black font-bold hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:shadow-[0_0_30px_rgba(6,182,212,0.8)]"
+                            className="ml-2 lg:ml-4 px-4 lg:px-6 py-2 rounded-full bg-primary text-black font-bold text-xs lg:text-sm hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:shadow-[0_0_30px_rgba(6,182,212,0.8)]"
                         >
                             Contact
                         </a>
                     </div>
 
-                    {/* Mobile Menu Button */}
                     <div className="flex md:hidden">
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="text-foreground p-2 rounded-full hover:bg-white/10 transition-colors"
+                            className="text-foreground p-1.5 sm:p-2 rounded-full hover:bg-white/10 transition-colors"
                             aria-label="Toggle menu"
                         >
-                            {isOpen ? <X size={24} /> : <Menu size={24} />}
+                            {isOpen ? <X size={20} /> : <Menu size={20} />}
                         </button>
                     </div>
                 </div>
             </div>
 
-            {/* Mobile Menu */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: -20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                        className="absolute top-20 left-4 right-4 p-4 rounded-2xl glass-strong md:hidden overflow-hidden border border-white/10"
+                        className="absolute top-14 sm:top-16 md:top-20 left-2 right-2 sm:left-4 sm:right-4 p-3 sm:p-4 rounded-xl sm:rounded-2xl glass-strong md:hidden overflow-hidden border border-white/10"
                     >
-                        <div className="flex flex-col space-y-2">
+                        <div className="flex flex-col space-y-1.5 sm:space-y-2">
                             {navLinks.map((link) => (
                                 <a
                                     key={link.name}
                                     href={link.href}
-                                    className="block px-4 py-3 rounded-xl text-base font-medium text-foreground hover:bg-white/5 transition-colors"
+                                    className="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base font-medium text-foreground hover:bg-white/5 transition-colors"
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {link.name}
@@ -118,7 +115,7 @@ const Navbar = () => {
                             ))}
                             <a
                                 href="#contact"
-                                className="block px-4 py-3 rounded-xl text-base font-bold text-center bg-primary text-black mt-4 hover:shadow-lg transition-all"
+                                className="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base font-bold text-center bg-primary text-black mt-2 sm:mt-4 hover:shadow-lg transition-all"
                                 onClick={() => setIsOpen(false)}
                             >
                                 Let's Connect

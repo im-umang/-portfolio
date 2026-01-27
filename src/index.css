@@ -137,5 +137,66 @@
     position: relative;
     overflow: hidden;
   }
+
+  /* Animation GPU Acceleration */
+  .animate-marquee,
+  .animate-marquee-reverse {
+    will-change: transform;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  /* Ensure motion works on all devices */
+  [class*="motion"] {
+    will-change: transform, opacity;
+  }
 }
 
+/* Force enable animations on all devices */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Ensure backdrop-blur works or fallback */
+@supports not (backdrop-filter: blur(10px)) {
+  .glass-card,
+  .glass-strong {
+    background: rgba(0, 0, 0, 0.85) !important;
+  }
+}
+
+/* Mobile touch improvements */
+@media (hover: none) and (pointer: coarse) {
+  .group:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  /* Ensure smooth animations on touch devices */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Force hardware acceleration for smoother touch animations */
+  [class*="motion"],
+  .glass-card,
+  .glass-strong {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Ensure Framer Motion animations work on all devices */
+@media screen {
+  .motion-safe {
+    will-change: transform, opacity;
+  }
+}
