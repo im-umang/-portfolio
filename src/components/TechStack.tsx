@@ -58,8 +58,8 @@ const TechStack = () => {
             >
               <div className="glass-strong px-3 sm:px-4 md:px-8 py-3 sm:py-4 md:py-6 rounded-lg sm:rounded-xl md:rounded-2xl min-w-[100px] sm:min-w-[140px] md:min-w-[200px] group cursor-pointer hover:shadow-[0_0_30px_rgba(6,182,212,0.3)] transition-all duration-300">
                 <div className="flex items-center gap-1.5 sm:gap-2 md:gap-4">
-                  <span className="text-base sm:text-xl md:text-3xl group-hover:scale-110 transition-transform">{tech.icon}</span>
-                  <span className="font-semibold text-xs sm:text-sm md:text-lg group-hover:text-primary transition-colors">
+                  <span className="text-base sm:text-lg md:text-xl lg:text-3xl group-hover:scale-110 transition-transform">{tech.icon}</span>
+                  <span className="font-semibold text-sm sm:text-base md:text-lg lg:text-xl group-hover:text-primary transition-colors">
                     {tech.name}
                   </span>
                 </div>
@@ -83,8 +83,8 @@ const TechStack = () => {
             >
               <div className="glass-strong px-3 sm:px-4 md:px-8 py-3 sm:py-4 md:py-6 rounded-lg sm:rounded-xl md:rounded-2xl min-w-[100px] sm:min-w-[140px] md:min-w-[200px] group cursor-pointer hover:shadow-[0_0_30px_rgba(6,182,212,0.3)] transition-all duration-300">
                 <div className="flex items-center gap-1.5 sm:gap-2 md:gap-4">
-                  <span className="text-base sm:text-xl md:text-3xl group-hover:scale-110 transition-transform">{tech.icon}</span>
-                  <span className="font-semibold text-xs sm:text-sm md:text-lg group-hover:text-primary transition-colors">
+                  <span className="text-base sm:text-lg md:text-xl lg:text-3xl group-hover:scale-110 transition-transform">{tech.icon}</span>
+                  <span className="font-semibold text-sm sm:text-base md:text-lg lg:text-xl group-hover:text-primary transition-colors">
                     {tech.name}
                   </span>
                 </div>

@@ -45,13 +45,28 @@
   * {
     @apply border-border;
   }
+  
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'Outfit', sans-serif;
-    overflow-x: hidden; /* Prevent horizontal scroll from animations */
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
+    @apply tracking-tight;
+  }
+
+  /* Section Anchor Offsets */
+  section {
+    scroll-margin-top: 5rem;
   }
 }
 
@@ -138,6 +153,24 @@
     overflow: hidden;
   }
 
+  /* Responsive Spacing Utilities */
+  .section-padding {
+    @apply py-16 sm:py-20 md:py-24 lg:py-32;
+  }
+
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Text Shadow Utilities for premium feel */
+  .shadow-glow-cyan {
+    text-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+  }
+
+  .shadow-glow-purple {
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+  }
+
   /* Animation GPU Acceleration */
   .animate-marquee,
   .animate-marquee-reverse {
@@ -151,6 +184,39 @@
   /* Ensure motion works on all devices */
   [class*="motion"] {
     will-change: transform, opacity;
+  }
+}
+
+/* Global Typography & Scroll Scaling */
+@layer base {
+  html {
+    @apply antialiased;
+    font-size: 14px; /* Slightly smaller base for mobile */
+  }
+
+  @screen sm {
+    html {
+      font-size: 15px;
+    }
+  }
+
+  @screen md {
+    html {
+      font-size: 16px;
+    }
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
   }
 }
 
