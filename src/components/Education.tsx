@@ -58,7 +58,7 @@ const Education = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:gap-8 relative px-0 sm:px-4">
-          <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-primary/30 to-transparent hidden md:block transform -translate-x-1/2" />
+          <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-primary/30 to-transparent transform -translate-x-1/2" />
 
           {educationData.map((item, index) => (
             <motion.div
@@ -67,7 +67,7 @@ const Education = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className={`relative ${index % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto'}`}
+              className={`relative pl-12 md:pl-0 ${index % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto'}`}
             >
               <div className="glass-card p-4 sm:p-5 md:p-6 lg:p-8 rounded-xl sm:rounded-2xl relative overflow-hidden group hover:border-primary/50 transition-all duration-300">
                 <div className="absolute top-0 right-0 p-2 sm:p-3 md:p-4 opacity-10 group-hover:opacity-20 transition-opacity">

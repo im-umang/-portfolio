@@ -52,7 +52,7 @@ const Experience = () => {
         </motion.div>
 
         <div className="relative space-y-5 sm:space-y-6 md:space-y-8">
-          <div className="hidden sm:block absolute left-[28px] top-4 bottom-4 w-[2px] bg-gradient-to-b from-primary/50 via-purple-500/50 to-transparent rounded-full" />
+          <div className="absolute left-[20px] sm:left-[28px] top-4 bottom-4 w-[2px] bg-gradient-to-b from-primary/50 via-purple-500/50 to-transparent rounded-full" />
 
           {experiences.map((exp, index) => (
             <motion.div
@@ -61,10 +61,10 @@ const Experience = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
-              className="relative pl-0 sm:pl-20"
+              className="relative pl-12 sm:pl-20"
             >
-              <div className="hidden sm:flex absolute left-0 top-0 w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-black/50 border border-white/10 items-center justify-center z-10 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-                <div className="text-xl md:text-2xl filter drop-shadow-lg">{exp.logo}</div>
+              <div className="flex absolute left-0 top-0 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-black/50 border border-white/10 items-center justify-center z-10 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                <div className="text-lg sm:text-xl md:text-2xl filter drop-shadow-lg">{exp.logo}</div>
               </div>
 
               <motion.div
@@ -72,13 +72,6 @@ const Experience = () => {
                 transition={{ duration: 0.3 }}
                 className="glass-card p-4 sm:p-5 md:p-6 lg:p-8 rounded-xl sm:rounded-2xl border-l-4 border-l-primary sm:border-l-transparent transition-all duration-300 group cursor-default"
               >
-                <div className="flex sm:hidden items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                  <span className="text-xl sm:text-2xl">{exp.logo}</span>
-                  <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-mono text-muted-foreground bg-white/5 px-2 py-0.5 sm:py-1 rounded-full">
-                    <Calendar className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary" />
-                    {exp.period}
-                  </div>
-                </div>
 
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-2 mb-3 sm:mb-4">
                   <div>
@@ -89,7 +82,7 @@ const Experience = () => {
                       {exp.company} <span className="text-muted-foreground">• {exp.location}</span>
                     </p>
                   </div>
-                  <div className="hidden sm:flex items-center gap-2 text-xs sm:text-sm font-mono text-muted-foreground bg-white/5 px-2 sm:px-3 py-1 rounded-full w-fit shrink-0">
+                  <div className="flex items-center gap-2 text-xs sm:text-sm font-mono text-muted-foreground bg-white/5 px-2 sm:px-3 py-1 rounded-full w-fit shrink-0">
                     <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
                     {exp.period}
                   </div>

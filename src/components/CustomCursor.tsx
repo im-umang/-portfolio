@@ -20,12 +20,26 @@ const CustomCursor = () => {
             cursorY.set(e.clientY);
         };
 
+        const updateTouchPosition = (e: TouchEvent) => {
+            if (e.touches.length > 0) {
+                cursorX.set(e.touches[0].clientX);
+                cursorY.set(e.touches[0].clientY);
+            }
+        };
+
         const handleMouseDown = () => setIsClicking(true);
         const handleMouseUp = () => setIsClicking(false);
+        const handleTouchStart = () => {
+            setIsClicking(true);
+            setIsHovering(true);
+        };
+        const handleTouchEnd = () => {
+            setIsClicking(false);
+            setTimeout(() => setIsHovering(false), 500);
+        };
 
         const handleMouseOver = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            // Check if hovering over clickable elements
             if (
                 target.tagName === 'A' ||
                 target.tagName === 'BUTTON' ||
@@ -40,14 +54,22 @@ const CustomCursor = () => {
         };
 
         window.addEventListener('mousemove', updateMousePosition);
+        window.addEventListener('touchstart', updateTouchPosition);
+        window.addEventListener('touchmove', updateTouchPosition);
         window.addEventListener('mousedown', handleMouseDown);
         window.addEventListener('mouseup', handleMouseUp);
+        window.addEventListener('touchstart', handleTouchStart);
+        window.addEventListener('touchend', handleTouchEnd);
         window.addEventListener('mouseover', handleMouseOver);
 
         return () => {
             window.removeEventListener('mousemove', updateMousePosition);
+            window.removeEventListener('touchstart', updateTouchPosition);
+            window.removeEventListener('touchmove', updateTouchPosition);
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
+            window.removeEventListener('touchstart', handleTouchStart);
+            window.removeEventListener('touchend', handleTouchEnd);
             window.removeEventListener('mouseover', handleMouseOver);
         };
     }, []);
