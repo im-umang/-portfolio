@@ -1,47 +1,99 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Umang Trivedi | Full-Stack Developer | MERN Stack Expert</title>
-  <link rel="icon" type="image/png" href="/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-  <!-- Primary Meta Tags -->
-  <meta name="title" content="Umang Trivedi | Full-Stack Developer | MERN Stack Expert" />
-  <meta name="description"
-    content="Umang Trivedi - Full-Stack Developer from Ahmedabad, India. Building high-performance web applications with React, Node.js, MongoDB, and modern JavaScript. Available for freelance projects and full-time opportunities." />
+  <!-- Primary Title & Meta -->
+  <title>Umang Trivedi | Full-Stack Developer • React • Node.js • MongoDB</title>
+  <meta name="title" content="Umang Trivedi | Full-Stack Developer • React • Node.js • MongoDB" />
+  <meta name="description" content="Umang Trivedi — Award-winning Full-Stack Developer from Ahmedabad, India. Crafting high-performance web apps with React, Node.js, MongoDB. MCA student at LJ University. Available for freelance & full-time." />
   <meta name="author" content="Umang Trivedi" />
-  <meta name="keywords"
-    content="Umang Trivedi, Full-Stack Developer, MERN Stack, React Developer, Node.js Developer, MongoDB, JavaScript, TypeScript, Web Developer India, Software Developer Ahmedabad, Portfolio, Frontend Developer, Backend Developer" />
+  <meta name="keywords" content="Umang Trivedi, Full-Stack Developer, MERN Stack, React Developer, Node.js, MongoDB, TypeScript, Web Developer Ahmedabad India, Software Engineer Portfolio, MCA LJ University, JavaScript Developer" />
   <meta name="robots" content="index, follow" />
   <meta name="language" content="English" />
+  <meta name="revisit-after" content="7 days" />
 
-  <!-- Theme Color -->
-  <meta name="theme-color" content="#06b6d4" />
-  <meta name="msapplication-TileColor" content="#06b6d4" />
+  <!-- Theme Colors -->
+  <meta name="theme-color" content="#000a0f" />
+  <meta name="msapplication-TileColor" content="#000a0f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Umang.dev" />
+  <meta name="mobile-web-app-capable" content="yes" />
 
-  <!-- Open Graph / Facebook -->
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+
+  <!-- Open Graph / Facebook / LinkedIn -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://umang.dev/" />
+  <meta property="og:url" content="https://umang-trivedi.vercel.app/" />
   <meta property="og:title" content="Umang Trivedi | Full-Stack Developer" />
-  <meta property="og:description"
-    content="Full-Stack Developer specializing in MERN Stack. Building modern, high-performance web applications with React, Node.js, and MongoDB." />
-  <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+  <meta property="og:description" content="Full-Stack Developer building high-performance apps with React, Node.js & MongoDB. Hackathon winner. Available for hire." />
+  <meta property="og:image" content="/favicon1.png" />
   <meta property="og:locale" content="en_US" />
-  <meta property="og:site_name" content="Umang Trivedi Portfolio" />
+  <meta property="og:site_name" content="Umang Trivedi — Portfolio" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://umang-trivedi.vercel.app/" />
+  <meta name="twitter:title" content="Umang Trivedi | Full-Stack Developer" />
+  <meta name="twitter:description" content="Full-Stack Developer. React • Node.js • MongoDB. Hackathon winner. MCA @ LJ University." />
+  <meta name="twitter:image" content="/favicon1.png" />
 
   <!-- Canonical URL -->
-  <link rel="canonical" href="https://umang.dev" />
+  <link rel="canonical" href="https://umang-trivedi.vercel.app/" />
 
-  <!-- Preconnect to external resources -->
+  <!-- Preconnect to Fonts (critical for LCP performance) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- DNS Prefetch for other CDNs -->
+  <link rel="dns-prefetch" href="https://images.unsplash.com" />
+
+  <!-- Structured Data / JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Umang Trivedi",
+    "url": "https://umang-trivedi.vercel.app",
+    "jobTitle": "Full-Stack Developer",
+    "description": "Full-Stack Developer specializing in React, Node.js, and MongoDB. MCA student at LJ University, Ahmedabad.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Ahmedabad",
+      "addressCountry": "IN"
+    },
+    "sameAs": [
+      "https://github.com/im-umang",
+      "https://www.linkedin.com/in/umang-trivedi31101"
+    ],
+    "knowsAbout": ["React", "Node.js", "MongoDB", "TypeScript", "Full-Stack Development", "Web Development"],
+    "email": "utrivedi80@gmail.com"
+  }
+  </script>
+
+  <!-- Critical inline CSS to prevent FOUC -->
+  <style>
+    html { background-color: #0a0a0f; }
+    body { margin: 0; }
+    #root { min-height: 100vh; }
+  </style>
 </head>
 
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
+
+  <!-- Noscript fallback -->
+  <noscript>
+    <div style="font-family:sans-serif;text-align:center;padding:4rem;color:#888">
+      Please enable JavaScript to view Umang Trivedi's portfolio.
+    </div>
+  </noscript>
 </body>
 
 </html>

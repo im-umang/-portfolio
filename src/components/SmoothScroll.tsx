@@ -1,23 +1,11 @@
-import { ReactLenis } from '@studio-freight/react-lenis';
-
-interface SmoothScrollProps {
-    children: React.ReactNode;
-}
-
-const SmoothScroll = ({ children }: SmoothScrollProps) => {
-    return (
-        <ReactLenis 
-            root 
-            options={{ 
-                lerp: 0.12, 
-                duration: 1.2, 
-                smoothWheel: true,
-                syncTouch: false // Use native high-performance scroll on mobile
-            }}
-        >
-            {children}
-        </ReactLenis>
-    );
+/**
+ * SmoothScroll — Lenis disabled.
+ * Native browser scroll is significantly more performant
+ * when combined with Framer Motion and Canvas animations.
+ * CSS scroll-behavior: smooth handles anchor links.
+ */
+const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
+    return <>{children}</>;
 };
 
 export default SmoothScroll;

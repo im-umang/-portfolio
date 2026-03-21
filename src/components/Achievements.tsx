@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Award, ExternalLink, Trophy, BookOpen } from 'lucide-react';
+import { Award, ExternalLink, Trophy, BookOpen, Sparkles, Star } from 'lucide-react';
 
 interface Certificate {
     title: string;
@@ -8,6 +8,7 @@ interface Certificate {
     type: 'hackathon' | 'certification';
     link: string;
     featured?: boolean;
+    description?: string;
 }
 
 const certificates: Certificate[] = [
@@ -18,29 +19,123 @@ const certificates: Certificate[] = [
         type: 'hackathon',
         link: '/certificates/Odoo_Hackathon_2026_Umang_Trivedi.pdf',
         featured: true,
+        description: 'Competed in a 24-hour hackathon building GearGuard — a full-stack asset management system using React.js, Node.js & MySQL.',
     },
     {
         title: 'Introduction to Software Engineering',
-        issuer: 'IBM',
+        issuer: 'IBM (via Coursera)',
         type: 'certification',
-        link: 'https://www.coursera.org/account/accomplishments/verify/UM37W79OM5A1',
+        link: 'https://www.coursera.org/account/accomplishments/certificate/UM37W79OM5A1',
+        description: 'Comprehensive foundation in software development lifecycle, engineering principles, and best practices.',
     },
     {
         title: 'Programming in C',
         issuer: 'CodeTantra',
         date: 'May 2025',
         type: 'certification',
-        link: '/certificates/CodeTantra_Programming_in_C_Umang_Trivedi.pdf',
+        link: 'https://ljku.codetantra.com/cert/certificate.jsp?certId=CT1827-uqhl00D-cdw',
+        description: 'Advanced C programming concepts including pointers, memory management, and data structures.',
     },
     {
         title: 'Generative AI: Fundamentals',
-        issuer: 'IBM',
+        issuer: 'IBM (via Coursera)',
         type: 'certification',
-        link: 'https://www.coursera.org/account/accomplishments/verify/GYMS0P4RL5YF',
+        link: 'https://www.coursera.org/account/accomplishments/specialization/certificate/RROYQPAIJNYJ',
+        description: 'Specialization covering generative AI concepts, LLMs, prompt engineering, and practical AI applications.',
     },
 ];
 
-const CertificateCard = ({ cert, index }: { cert: Certificate; index: number }) => {
+// Featured (Hackathon) Card
+const FeaturedCard = ({ cert }: { cert: Certificate }) => {
+    return (
+        <motion.a
+            href={cert.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ y: -6, scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            className="group relative block rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer shimmer"
+            style={{
+                background: 'linear-gradient(135deg, rgba(0,189,255,0.12) 0%, rgba(139,92,246,0.08) 50%, rgba(0,0,0,0.3) 100%)',
+                border: '1px solid rgba(0,189,255,0.3)',
+            }}
+            aria-label={`View ${cert.title} certificate`}
+        >
+            {/* Animated border gradient */}
+            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: 'linear-gradient(135deg, rgba(0,189,255,0.08), rgba(139,92,246,0.08))' }}
+            />
+
+            {/* Top line */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent" />
+
+            {/* Recent badge */}
+            <div className="absolute top-0 right-0 z-10">
+                <div className="bg-primary text-black text-[9px] font-black uppercase tracking-widest px-4 py-1.5 rounded-bl-xl">
+                    🏆 Hackathon Achievement
+                </div>
+            </div>
+
+            <div className="relative z-10 p-6 sm:p-8 md:p-10">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-8">
+                    {/* Trophy Icon */}
+                    <motion.div
+                        animate={{ rotate: [0, -8, 8, 0] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                        className="flex-shrink-0"
+                    >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary/15 border-2 border-primary/30 flex items-center justify-center shadow-[0_0_30px_rgba(0,189,255,0.3)]">
+                            <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
+                        </div>
+                    </motion.div>
+
+                    <div className="flex-1">
+                        <div className="flex flex-wrap items-center gap-2 mb-3">
+                            <span className="px-3 py-1 text-[9px] uppercase font-bold tracking-widest rounded-full bg-primary/15 text-primary border border-primary/30">
+                                Hackathon
+                            </span>
+                            {cert.date && (
+                                <span className="text-xs text-white/40 font-mono">{cert.date}</span>
+                            )}
+                            <div className="flex items-center gap-1 ml-auto">
+                                {[...Array(5)].map((_, i) => (
+                                    <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                                ))}
+                            </div>
+                        </div>
+
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white group-hover:text-primary transition-colors mb-2">
+                            {cert.title}
+                        </h3>
+                        <p className="text-sm sm:text-base font-semibold text-white/60 mb-3">{cert.issuer}</p>
+                        {cert.description && (
+                            <p className="text-xs sm:text-sm text-white/40 leading-relaxed mb-5">{cert.description}</p>
+                        )}
+
+                        <div className="flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
+                            <ExternalLink className="w-4 h-4" />
+                            <span>View Certificate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Bottom glow */}
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+        </motion.a>
+    );
+};
+
+// Regular Certification Card
+const CertCard = ({ cert, index }: { cert: Certificate; index: number }) => {
+    const isHackathon = cert.type === 'hackathon';
+    const accentColor = isHackathon ? 'rgba(0,189,255,1)' : 'rgba(139,92,246,1)';
+    const accentBg = isHackathon ? 'rgba(0,189,255,0.1)' : 'rgba(139,92,246,0.1)';
+
     return (
         <motion.a
             href={cert.link}
@@ -49,60 +144,54 @@ const CertificateCard = ({ cert, index }: { cert: Certificate; index: number }) 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            whileHover={{ y: -6, scale: 1.02 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.3 } }}
             whileTap={{ scale: 0.98 }}
-            className={`group relative block rounded-xl overflow-hidden cursor-pointer transition-all duration-300 ${cert.featured
-                    ? 'bg-gradient-to-br from-primary/20 via-primary/10 to-transparent border-2 border-primary/40 hover:border-primary/70 hover:shadow-[0_0_40px_rgba(6,182,212,0.2)]'
-                    : 'bg-white/[0.03] border border-white/10 hover:border-white/25 hover:bg-white/[0.06]'
-                }`}
-            aria-label={`View ${cert.title} certificate`}
+            className="group relative block glass-card rounded-2xl overflow-hidden cursor-pointer shimmer"
+            aria-label={`View ${cert.title}`}
         >
-            {cert.featured && (
-                <div className="absolute top-0 right-0">
-                    <div className="bg-primary text-black text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-lg">
-                        Recent Achievement
-                    </div>
-                </div>
-            )}
+            {/* Top accent */}
+            <div className="h-0.5 w-full" style={{ background: `linear-gradient(90deg, ${accentColor}, transparent)` }} />
 
-            <div className="p-4 sm:p-5 md:p-6">
-                <div className="flex items-start justify-between mb-3 sm:mb-4">
-                    <div className={`p-2 sm:p-3 rounded-lg sm:rounded-xl ${cert.type === 'hackathon'
-                            ? 'bg-primary/20 text-primary'
-                            : 'bg-violet-500/20 text-violet-400'
-                        }`}>
-                        {cert.type === 'hackathon' ? (
-                            <Trophy className="w-5 h-5 sm:w-6 sm:h-6" />
-                        ) : (
-                            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />
-                        )}
+            <div className="p-5 sm:p-6">
+                <div className="flex items-start justify-between mb-4">
+                    <div
+                        className="p-2.5 sm:p-3 rounded-xl"
+                        style={{ background: accentBg, border: `1px solid ${accentColor}30` }}
+                    >
+                        <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: accentColor }} />
                     </div>
-                    <span className={`px-2 py-1 text-[9px] sm:text-[10px] uppercase font-bold tracking-wider rounded-full ${cert.type === 'hackathon'
-                            ? 'bg-primary/20 text-primary border border-primary/30'
-                            : 'bg-violet-500/20 text-violet-400 border border-violet-500/30'
-                        }`}>
-                        {cert.type === 'hackathon' ? 'Hackathon' : 'Certification'}
+                    <span
+                        className="text-[9px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full"
+                        style={{ background: accentBg, color: accentColor, border: `1px solid ${accentColor}30` }}
+                    >
+                        Certification
                     </span>
                 </div>
 
-                <h3 className={`font-bold mb-2 group-hover:text-primary transition-colors ${cert.featured ? 'text-lg sm:text-xl md:text-2xl' : 'text-base sm:text-lg'
-                    }`}>
+                <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-primary transition-colors mb-1.5 leading-snug">
                     {cert.title}
                 </h3>
 
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-white/60 mb-3 sm:mb-4">
-                    <span className="font-medium">{cert.issuer}</span>
+                <div className="flex flex-wrap items-center gap-2 text-xs text-white/50 mb-3">
+                    <span className="font-medium text-white/70">{cert.issuer}</span>
                     {cert.date && (
                         <>
-                            <span className="w-1 h-1 rounded-full bg-white/40" />
+                            <span className="w-1 h-1 rounded-full bg-white/30" />
                             <span>{cert.date}</span>
                         </>
                     )}
                 </div>
 
-                <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-white/50 group-hover:text-primary transition-colors">
-                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
+                {cert.description && (
+                    <p className="text-[11px] text-white/35 leading-relaxed mb-4">{cert.description}</p>
+                )}
+
+                <div
+                    className="flex items-center gap-1.5 text-xs font-medium transition-colors"
+                    style={{ color: accentColor }}
+                >
+                    <ExternalLink className="w-3.5 h-3.5" />
                     <span>View Certificate</span>
                 </div>
             </div>
@@ -115,36 +204,41 @@ const Achievements = () => {
     const otherCerts = certificates.filter(c => !c.featured);
 
     return (
-        <section className="py-16 sm:py-20 md:py-28 px-4 sm:px-6 relative" id="achievements">
+        <section className="py-24 sm:py-28 md:py-36 px-4 sm:px-6 relative" id="achievements">
+            <div className="section-glow-accent" />
             <div className="max-w-6xl mx-auto">
+                {/* Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                    className="text-center mb-10 sm:mb-14 md:mb-16"
+                    transition={{ duration: 0.7 }}
+                    className="text-center mb-16 md:mb-20"
                 >
-                    <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 border border-white/10 mb-4 sm:mb-6">
-                        <Award className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
-                        <span className="text-xs sm:text-sm font-medium text-white/70">Achievements & Certifications</span>
+                    <div className="section-label mx-auto mb-6">
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span>Achievements & Certs</span>
                     </div>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
-                        Learning & <span className="text-gradient">Recognition</span>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4">
+                        Learning &{' '}
+                        <span className="text-gradient">Recognition</span>
                     </h2>
-                    <p className="text-white/60 text-sm sm:text-base md:text-lg max-w-xl mx-auto px-2">
-                        Continuous learning and real-world achievements
+                    <p className="text-white/50 text-sm sm:text-base max-w-xl mx-auto">
+                        Continuous growth through real-world challenges and certified learning
                     </p>
                 </motion.div>
 
+                {/* Featured Hackathon */}
                 {featuredCert && (
-                    <div className="mb-6 sm:mb-8">
-                        <CertificateCard cert={featuredCert} index={0} />
+                    <div className="mb-8 sm:mb-10">
+                        <FeaturedCard cert={featuredCert} />
                     </div>
                 )}
 
+                {/* Other Certs Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                     {otherCerts.map((cert, index) => (
-                        <CertificateCard key={cert.title} cert={cert} index={index + 1} />
+                        <CertCard key={cert.title} cert={cert} index={index} />
                     ))}
                 </div>
             </div>

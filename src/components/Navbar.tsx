@@ -1,131 +1,257 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { Menu, X, Code2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
+
+const NAV_LINKS = [
+  { label: 'Home',       href: '#home',        id: 'home'        },
+  { label: 'Stack',      href: '#stack',        id: 'stack'       },
+  { label: 'Projects',   href: '#projects',     id: 'projects'    },
+  { label: 'Experience', href: '#experience',   id: 'experience'  },
+  { label: 'Education',  href: '#education',    id: 'education'   },
+  { label: 'Awards',     href: '#achievements', id: 'achievements'},
+];
+
+const mobileVariants: Variants = {
+  hidden: { opacity: 0, y: -14, scale: 0.97 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring' as const, stiffness: 340, damping: 28 } },
+  exit:    { opacity: 0, y: -10, scale: 0.97, transition: { duration: 0.16, ease: 'easeIn' as const } },
+};
+
+const listVariants: Variants = {
+  hidden:  {},
+  visible: { transition: { staggerChildren: 0.05 } },
+};
+
+const itemVariants: Variants = {
+  hidden:  { opacity: 0, x: -12 },
+  visible: { opacity: 1, x: 0, transition: { ease: 'easeOut' as const } },
+};
 
 const Navbar = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-    const [activeTab, setActiveTab] = useState("Home");
+  const [scrolled,      setScrolled]      = useState(false);
+  const [hidden,        setHidden]        = useState(false);
+  const [menuOpen,      setMenuOpen]      = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const lastScrollY = useRef(0);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
-        };
+  /* ── Smart hide/show on scroll direction ── */
+  useEffect(() => {
+    const THRESHOLD = 80;
 
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    const onScroll = () => {
+      const y    = window.scrollY;
+      const diff = y - lastScrollY.current;
 
-    const navLinks = [
-        { name: "Home", href: "/" },
-        { name: "Tech Stack", href: "#stack" },
-        { name: "Projects", href: "#projects" },
-        { name: "Experience", href: "#experience" },
-        { name: "Education", href: "#education" },
-    ];
+      if (y < THRESHOLD) {
+        setHidden(false);
+        setScrolled(false);
+        lastScrollY.current = y;
+        return;
+      }
 
-    return (
-        <motion.nav
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="fixed top-0 w-full z-50 flex justify-center pt-2 sm:pt-4 px-2 sm:px-4"
-        >
-            <div
-                className={cn(
-                    "w-full max-w-5xl rounded-full transition-all duration-300 border border-transparent",
-                    scrolled
-                        ? "glass-strong py-2 px-3 sm:px-4 md:px-6 shadow-2xl border-white/10"
-                        : "bg-transparent py-2 sm:py-3 md:py-4 px-3 sm:px-4"
-                )}
-            >
-                <div className="flex justify-between items-center">
-                    <div className="flex-shrink-0 flex items-center">
-                        <Link
-                            to="/"
-                            className="text-lg sm:text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-white to-secondary hover:opacity-80 transition-opacity"
-                        >
-                            <span className="text-gradient font-bold tracking-tighter">Portfolio</span>
-                        </Link>
-                    </div>
+      setScrolled(true);
 
-                    <div className="hidden md:flex items-center gap-1 lg:gap-2">
-                        {navLinks.map((link) => (
-                            <a
-                                key={link.name}
-                                href={link.href}
-                                onClick={() => setActiveTab(link.name)}
-                                className="relative px-3 lg:px-4 py-2 rounded-full text-xs lg:text-sm font-medium transition-colors hover:text-white"
-                            >
-                                {activeTab === link.name && (
-                                    <motion.div
-                                        layoutId="active-pill"
-                                        className="absolute inset-0 bg-white/10 rounded-full border border-white/5"
-                                        transition={{ type: "spring", duration: 0.6 }}
-                                    />
-                                )}
-                                <span className={cn(
-                                    "relative z-10 transition-colors duration-200",
-                                    activeTab === link.name ? "text-primary" : "text-muted-foreground"
-                                )}>
-                                    {link.name}
-                                </span>
-                            </a>
-                        ))}
-                        <a
-                            href="#contact"
-                            className="ml-2 lg:ml-4 px-4 lg:px-6 py-2 rounded-full bg-primary text-black font-bold text-xs lg:text-sm hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:shadow-[0_0_30px_rgba(6,182,212,0.8)]"
-                        >
-                            Contact
-                        </a>
-                    </div>
+      if (diff > 4)  { setHidden(true);  if (menuOpen) setMenuOpen(false); }
+      if (diff < -4) { setHidden(false); }
 
-                    <div className="flex md:hidden">
-                        <button
-                            onClick={() => setIsOpen(!isOpen)}
-                            className="text-foreground p-1.5 sm:p-2 rounded-full hover:bg-white/10 transition-colors"
-                            aria-label="Toggle menu"
-                        >
-                            {isOpen ? <X size={20} /> : <Menu size={20} />}
-                        </button>
-                    </div>
-                </div>
-            </div>
+      lastScrollY.current = y;
+    };
 
-            <AnimatePresence>
-                {isOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95, y: -20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                        className="absolute top-14 sm:top-16 md:top-20 left-2 right-2 sm:left-4 sm:right-4 p-3 sm:p-4 rounded-xl sm:rounded-2xl glass-strong md:hidden overflow-hidden border border-white/10"
-                    >
-                        <div className="flex flex-col space-y-1.5 sm:space-y-2">
-                            {navLinks.map((link) => (
-                                <a
-                                    key={link.name}
-                                    href={link.href}
-                                    className="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base font-medium text-foreground hover:bg-white/5 transition-colors"
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    {link.name}
-                                </a>
-                            ))}
-                            <a
-                                href="#contact"
-                                className="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base font-bold text-center bg-primary text-black mt-2 sm:mt-4 hover:shadow-lg transition-all"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                Let's Connect
-                            </a>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </motion.nav>
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [menuOpen]);
+
+  /* ── Close menu on resize ── */
+  useEffect(() => {
+    const close = () => setMenuOpen(false);
+    window.addEventListener('resize', close);
+    return () => window.removeEventListener('resize', close);
+  }, []);
+
+  /* ── Active section via IntersectionObserver ── */
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); }),
+      { threshold: 0.25, rootMargin: '-72px 0px -40% 0px' }
     );
+    NAV_LINKS.forEach(({ id }) => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    return () => obs.disconnect();
+  }, []);
+
+  /* ── Smooth hash scroll ── */
+  const scrollTo = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    const id  = href.replace('#', '');
+    const el  = document.getElementById(id);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 72;
+    window.scrollTo({ top, behavior: 'smooth' });
+    window.history.replaceState(null, '', href);
+  }, []);
+
+  return (
+    <>
+      {/* ── Main navbar ── */}
+      <motion.header
+        initial={{ y: -96, opacity: 0 }}
+        animate={{ y: hidden ? '-110%' : 0, opacity: hidden ? 0 : 1 }}
+        transition={{ duration: 0.38, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="fixed top-0 inset-x-0 z-50 flex justify-center px-4 pt-3"
+      >
+        <div
+          className={cn(
+            'w-full max-w-5xl rounded-2xl transition-all duration-500',
+            scrolled
+              ? 'glass-strong shadow-[0_8px_40px_rgba(0,0,0,0.5)] border border-white/[0.07]'
+              : 'bg-transparent border border-transparent'
+          )}
+          style={{ padding: '10px 20px' }}
+        >
+          <div className="flex items-center justify-between">
+
+            {/* Logo */}
+            <Link
+              to="/"
+              onClick={e => scrollTo(e as unknown as React.MouseEvent<HTMLAnchorElement>, '#home')}
+              className="flex items-center gap-2.5 group select-none"
+              aria-label="Umang Trivedi – Home"
+            >
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-primary/10 border border-primary/25 group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300">
+                <Code2 className="w-4 h-4 text-primary" />
+              </div>
+              <span className="hidden xs:block font-display font-bold text-base text-white/90 group-hover:text-white transition-colors">
+                umang<span className="text-primary">.</span>dev
+              </span>
+            </Link>
+
+            {/* Desktop Links */}
+            <nav className="hidden md:flex items-center" aria-label="Main navigation">
+              <ul className="flex items-center gap-0.5">
+                {NAV_LINKS.map(link => {
+                  const active = activeSection === link.id;
+                  return (
+                    <li key={link.id}>
+                      <a
+                        href={link.href}
+                        onClick={e => scrollTo(e, link.href)}
+                        className="relative px-3.5 lg:px-4 py-2 flex items-center group"
+                        aria-current={active ? 'page' : undefined}
+                      >
+                        {active && (
+                          <motion.span
+                            layoutId="nav-pill"
+                            className="absolute inset-0 rounded-full bg-white/[0.07] border border-white/[0.09]"
+                            transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                          />
+                        )}
+                        <span className={cn(
+                          'relative z-10 text-xs lg:text-[13px] font-medium tracking-wide transition-colors duration-200',
+                          active ? 'text-white' : 'text-white/45 group-hover:text-white/80'
+                        )}>
+                          {link.label}
+                        </span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <motion.a
+                href="#contact"
+                onClick={e => scrollTo(e, '#contact')}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                className="ml-4 px-5 py-2 rounded-full text-xs lg:text-sm font-bold text-white"
+                style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 22px hsl(var(--primary)/0.55)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
+              >
+                Hire Me
+              </motion.a>
+            </nav>
+
+            {/* Mobile Toggle */}
+            <motion.button
+              onClick={() => setMenuOpen(p => !p)}
+              whileTap={{ scale: 0.88 }}
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={menuOpen}
+              className="md:hidden p-2.5 rounded-xl glass-strong text-white/70 hover:text-white border border-white/[0.08]"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {menuOpen
+                  ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.13 }}><X size={18} /></motion.span>
+                  : <motion.span key="m" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.13 }}><Menu size={18} /></motion.span>
+                }
+              </AnimatePresence>
+            </motion.button>
+
+          </div>
+        </div>
+      </motion.header>
+
+      {/* ── Mobile Dropdown (rendered outside header to avoid z-index issues) ── */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            key="mobile-menu"
+            variants={mobileVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed top-[64px] left-4 right-4 z-40 glass-strong rounded-2xl border border-white/[0.09] overflow-hidden md:hidden"
+            role="dialog"
+            aria-label="Navigation menu"
+          >
+            <motion.ul
+              variants={listVariants}
+              initial="hidden"
+              animate="visible"
+              className="flex flex-col p-2"
+              role="menu"
+            >
+              {NAV_LINKS.map(link => {
+                const active = activeSection === link.id;
+                return (
+                  <motion.li key={link.id} variants={itemVariants} role="none">
+                    <a
+                      href={link.href}
+                      onClick={e => scrollTo(e, link.href)}
+                      role="menuitem"
+                      aria-current={active ? 'page' : undefined}
+                      className={cn(
+                        'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200',
+                        active
+                          ? 'text-primary bg-primary/10 border border-primary/20'
+                          : 'text-white/55 hover:text-white hover:bg-white/[0.05]'
+                      )}
+                    >
+                      {active && <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />}
+                      {link.label}
+                    </a>
+                  </motion.li>
+                );
+              })}
+
+              <motion.li variants={itemVariants} className="mt-2 px-2 pb-2">
+                <a
+                  href="#contact"
+                  onClick={e => scrollTo(e, '#contact')}
+                  className="flex items-center justify-center py-3 rounded-xl text-sm font-bold text-white w-full"
+                  style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}
+                >
+                  Hire Me ✦
+                </a>
+              </motion.li>
+            </motion.ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
 };
 
 export default Navbar;
