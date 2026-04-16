@@ -37,7 +37,7 @@ const projects = [
     description:
       'Real-time speech analysis platform with multi-language support, fluency scoring, and personalized AI-driven feedback for language learners.',
     tech: ['React.js', 'Node.js', 'MongoDB', 'Radix UI'],
-    image: 'https://images.unsplash.com/photo-1589254066006-99b3d2f46b97?w=900&h=540&fit=crop&q=80',
+    image: '../public/speakwise.png',
     liveUrl: 'https://speakwiseai.vercel.app/',
     githubUrl: 'https://github.com/imjayjoshi/SpeakWise.git',
     badge: null,
@@ -51,7 +51,7 @@ const projects = [
     description:
       'Comprehensive coaching institute system — attendance, grade management, analytics, fee tracking, and multi-role admin panel.',
     tech: ['React.js', 'Node.js', 'MySQL', 'Tailwind CSS'],
-    image: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=900&h=540&fit=crop&q=80',
+    image: '../public/vcs.png',
     liveUrl: null,
     githubUrl: 'https://github.com/im-umang/class-management-system.git',
     badge: null,
@@ -74,8 +74,8 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
     const { left, top, width, height } = cardRef.current.getBoundingClientRect();
-    rotX.set(((e.clientY - top  - height / 2) / (height / 2)) * -6);
-    rotY.set(((e.clientX - left - width  / 2) / (width  / 2)) *  6);
+    rotX.set(((e.clientY - top - height / 2) / (height / 2)) * -6);
+    rotY.set(((e.clientX - left - width / 2) / (width / 2)) * 6);
   };
 
   const onLeave = () => { rotX.set(0); rotY.set(0); setHovered(false); };

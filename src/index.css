@@ -277,11 +277,10 @@
   /* ── GRID/DOT BG ── */
   .dot-grid-bg {
     background-image: radial-gradient(
-      rgba(255, 255, 255, 0.06) 1px,
-      transparent 1px
+      rgba(255, 255, 255, 0.18) 2px,
+      transparent 2px
     );
-    background-size: 32px 32px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+    background-size: 26px 26px;
   }
 
   /* ── GLOW EFFECTS ── */

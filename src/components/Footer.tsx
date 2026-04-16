@@ -220,7 +220,7 @@ const Footer = () => {
                         <p className="flex items-center gap-1.5 text-center">
                             © {currentYear} — Crafted with
                             <Heart className="w-3.5 h-3.5 text-red-400 fill-red-400 animate-pulse" />
-                            and lots of ☕ code
+                            by Umang Trivedi
                         </p>
 
                         <div className="flex items-center gap-1.5">

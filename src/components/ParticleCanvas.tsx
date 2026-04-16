@@ -20,9 +20,9 @@ const ParticleCanvas = () => {
 
     const isMobile  = window.innerWidth < 768;
     const isTablet  = window.innerWidth < 1024;
-    const COUNT     = isMobile ? 24 : isTablet ? 48 : 72;
-    const MAX_DIST  = isMobile ? 100 : 140;
-    const REPEL     = 90;
+    const COUNT     = isMobile ? 45 : isTablet ? 80 : 120;
+    const MAX_DIST  = isMobile ? 120 : 170;
+    const REPEL     = 110;
 
     let W = canvas.width  = window.innerWidth;
     let H = canvas.height = window.innerHeight;
@@ -34,10 +34,10 @@ const ParticleCanvas = () => {
     const particles: Particle[] = Array.from({ length: COUNT }, () => ({
       x: Math.random() * W,
       y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.35,
-      radius: Math.random() * 1.6 + 0.6,
-      alpha: Math.random() * 0.4 + 0.1,
+      vx: (Math.random() - 0.5) * 0.55,
+      vy: (Math.random() - 0.5) * 0.55,
+      radius: Math.random() * 2.2 + 0.8,
+      alpha: Math.random() * 0.5 + 0.2,
       life: Math.random() * 200,
       maxLife: 200 + Math.random() * 200,
     }));
@@ -112,7 +112,7 @@ const ParticleCanvas = () => {
             const dy2  = p.y - q.y;
             const d2   = Math.sqrt(dx2 * dx2 + dy2 * dy2);
             if (d2 < MAX_DIST) {
-              const lineAlpha = (1 - d2 / MAX_DIST) * 0.06;
+              const lineAlpha = (1 - d2 / MAX_DIST) * 0.12;
               ctx.beginPath();
               ctx.moveTo(p.x, p.y);
               ctx.lineTo(q.x, q.y);

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Code2 } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 
@@ -119,12 +119,9 @@ const Navbar = () => {
               className="flex items-center gap-2.5 group select-none"
               aria-label="Umang Trivedi – Home"
             >
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-primary/10 border border-primary/25 group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300">
-                <Code2 className="w-4 h-4 text-primary" />
+              <div className="flex items-center justify-center flex-shrink-0 p-3 rounded-full bg-primary/10 border border-primary/25 hover:bg-primary/20 hover:border-primary/50 transition-all duration-300">
+                <img src="/logo.png" alt="Logo" className="h-14 w-14 object-contain rounded-full" />
               </div>
-              <span className="hidden xs:block font-display font-bold text-base text-white/90 group-hover:text-white transition-colors">
-                umang<span className="text-primary">.</span>dev
-              </span>
             </Link>
 
             {/* Desktop Links */}
