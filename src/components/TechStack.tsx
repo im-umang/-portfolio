@@ -112,10 +112,14 @@ const TechStack = () => {
     : technologies.filter(t => t.category === activeCategory);
 
   return (
-    <section className="py-24 sm:py-28 md:py-36 overflow-hidden relative" id="stack">
-      <div className="absolute inset-0 bg-radial-secondary opacity-30 pointer-events-none" />
+    <section className="pt-20 sm:pt-24 pb-16 sm:pb-20 overflow-hidden relative" id="stack">
+      {/* ── Atmospheric Background ── */}
+      <div className="section-glow-tech" aria-hidden="true" />
+      <div className="absolute inset-0 cyber-dots-bg opacity-40 pointer-events-none" aria-hidden="true" />
+      <div className="absolute top-1/4 -left-48 w-96 h-96 rounded-full bg-secondary/15 blur-[110px] pointer-events-none" aria-hidden="true" />
+      <div className="absolute bottom-1/4 -right-48 w-96 h-96 rounded-full bg-primary/15 blur-[110px] pointer-events-none" aria-hidden="true" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-12 sm:mb-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-12 sm:mb-14 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -163,9 +163,14 @@ const EducationCard = ({ item, index }: { item: typeof educationData[0]; index: 
 
 const Education = () => {
     return (
-        <section id="education" className="py-24 sm:py-28 md:py-36 relative">
-            <div className="section-glow-secondary" />
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="education" className="pt-20 sm:pt-24 pb-16 sm:pb-20 relative overflow-hidden">
+            {/* ── Atmospheric Background ── */}
+            <div className="section-glow-secondary" aria-hidden="true" />
+            <div className="absolute inset-0 cyber-grid-bg opacity-40 pointer-events-none" aria-hidden="true" />
+            <div className="absolute top-20 right-0 w-[450px] h-[450px] rounded-full bg-secondary/14 blur-[130px] pointer-events-none" aria-hidden="true" />
+            <div className="absolute bottom-10 left-0 w-[450px] h-[450px] rounded-full bg-primary/12 blur-[130px] pointer-events-none" aria-hidden="true" />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}

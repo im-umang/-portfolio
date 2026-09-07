@@ -37,7 +37,8 @@ const projects = [
     description:
       'Real-time speech analysis platform with multi-language support, fluency scoring, and personalized AI-driven feedback for language learners.',
     tech: ['React.js', 'Node.js', 'MongoDB', 'Radix UI'],
-    image: '../public/speakwise.png',
+    image: '/speakwise.png',
+    fallback: 'https://leading-bronze-cmgziwe3.edgeone.dev/file.png',
     liveUrl: 'https://speakwiseai.vercel.app/',
     githubUrl: 'https://github.com/imjayjoshi/SpeakWise.git',
     badge: null,
@@ -51,7 +52,8 @@ const projects = [
     description:
       'Comprehensive coaching institute system — attendance, grade management, analytics, fee tracking, and multi-role admin panel.',
     tech: ['React.js', 'Node.js', 'MySQL', 'Tailwind CSS'],
-    image: '../public/vcs.png',
+    image: '/vcs.png',
+    fallback: 'https://oral-gold-qkqvhtgi.edgeone.dev/file.png',
     liveUrl: null,
     githubUrl: 'https://github.com/im-umang/class-management-system.git',
     badge: null,
@@ -93,36 +95,43 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
       onMouseMove={onMove}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={onLeave}
-      className="group shimmer"
+      className="group shimmer h-full"
     >
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`View ${project.title}`}
-        className="block h-full"
+      <div
+        className="relative h-full flex flex-col justify-between rounded-2xl overflow-hidden transition-all duration-500"
+        style={{
+          background: 'rgba(255, 255, 255, 0.025)',
+          border: `1px solid ${hovered ? project.glow.replace('0.35', '0.4') : 'rgba(255,255,255,0.07)'}`,
+          boxShadow: hovered
+            ? `0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px ${project.glow}`
+            : '0 4px 24px rgba(0,0,0,0.35)',
+        }}
       >
+        {/* Top accent line */}
         <div
-          className="relative h-full rounded-2xl overflow-hidden transition-all duration-500"
-          style={{
-            background: 'rgba(255,255,255,0.025)',
-            border: `1px solid ${hovered ? project.glow.replace('0.35', '0.4') : 'rgba(255,255,255,0.07)'}`,
-            boxShadow: hovered
-              ? `0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px ${project.glow}`
-              : '0 4px 24px rgba(0,0,0,0.35)',
-          }}
-        >
-          {/* Top accent */}
-          <div className="absolute top-0 inset-x-0 h-[2px] z-20"
-            style={{ background: `linear-gradient(90deg, transparent, ${project.accent}, transparent)` }}
-          />
+          className="absolute top-0 inset-x-0 h-[2px] z-20"
+          style={{ background: `linear-gradient(90deg, transparent, ${project.accent}, transparent)` }}
+        />
 
-          {/* Image */}
-          <div className="relative h-44 sm:h-48 overflow-hidden">
+        {/* Top Media Container */}
+        <div className="relative">
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`View ${project.title}`}
+            className="block relative h-44 sm:h-48 overflow-hidden bg-surface-2 cursor-pointer"
+          >
             <motion.img
               src={project.image}
               alt={project.title}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if ('fallback' in project && project.fallback && target.src !== project.fallback) {
+                  target.src = project.fallback as string;
+                }
+              }}
               animate={{ scale: hovered ? 1.07 : 1 }}
               transition={{ duration: 0.65, ease: 'easeOut' }}
               loading="lazy"
@@ -131,7 +140,7 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
 
             {/* Hover glow overlay */}
             <motion.div
-              className="absolute inset-0"
+              className="absolute inset-0 pointer-events-none"
               animate={{ opacity: hovered ? 0.18 : 0 }}
               transition={{ duration: 0.4 }}
               style={{ background: `linear-gradient(135deg, ${project.accent}, transparent)` }}
@@ -140,13 +149,17 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
             {/* Badges */}
             <div className="absolute top-3 left-3 flex gap-1.5 z-10">
               {project.badge && (
-                <span className="px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide rounded-full backdrop-blur-sm"
-                  style={{ background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff' }}>
+                <span
+                  className="px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide rounded-full backdrop-blur-sm"
+                  style={{ background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff' }}
+                >
                   {project.badge}
                 </span>
               )}
-              <span className="px-2.5 py-1 text-[9px] font-medium rounded-full backdrop-blur-sm flex items-center gap-1"
-                style={{ background: 'rgba(0,0,0,0.45)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <span
+                className="px-2.5 py-1 text-[9px] font-medium rounded-full backdrop-blur-sm flex items-center gap-1"
+                style={{ background: 'rgba(0,0,0,0.45)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.1)' }}
+              >
                 <Clock className="w-2.5 h-2.5" />
                 {project.timeline}
               </span>
@@ -170,10 +183,12 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
                 {project.title}
               </h3>
             </div>
-          </div>
+          </a>
+        </div>
 
-          {/* Body */}
-          <div className="p-5">
+        {/* Body & Actions */}
+        <div className="p-5 flex-1 flex flex-col justify-between">
+          <div>
             <p className="text-white/50 text-xs sm:text-[13px] leading-relaxed mb-4 line-clamp-2">
               {project.description}
             </p>
@@ -182,31 +197,53 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
             <div className="flex flex-wrap gap-1.5 mb-4">
               {project.tech.map(t => <span key={t} className="tech-badge">{t}</span>)}
             </div>
+          </div>
 
-            {/* Footer row */}
-            <div className="flex items-center justify-between pt-3 border-t border-white/[0.07]">
-              <span className="flex items-center gap-1.5 text-[11px] font-medium"
-                style={{ color: project.liveUrl ? project.accent : 'rgba(255,255,255,0.25)' }}>
+          {/* Footer action row */}
+          <div className="flex items-center justify-between pt-3 border-t border-white/[0.07]">
+            {project.liveUrl ? (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-[11px] font-medium transition-transform hover:scale-105"
+                style={{ color: project.accent }}
+              >
                 <ExternalLink className="w-3.5 h-3.5" />
-                {project.liveUrl ? 'Live Demo' : 'No Live Demo'}
+                <span>Live Demo</span>
+              </a>
+            ) : (
+              <span className="flex items-center gap-1.5 text-[11px] font-medium text-white/25 cursor-default">
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>No Live Demo</span>
               </span>
-              <span className="flex items-center gap-1.5 text-[11px] font-medium text-white/35 group-hover:text-white/70 transition-colors">
-                <Github className="w-3.5 h-3.5" />
-                Source Code
-              </span>
-            </div>
+            )}
+
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-[11px] font-medium text-white/45 hover:text-white transition-colors"
+            >
+              <Github className="w-3.5 h-3.5" />
+              <span>Source Code</span>
+            </a>
           </div>
         </div>
-      </a>
+      </div>
     </motion.div>
   );
 };
 
 const Projects = () => (
-  <section className="relative py-24 sm:py-28 md:py-36 px-4 sm:px-6" id="projects">
-    <div className="absolute inset-0 bg-radial-primary opacity-40 pointer-events-none" />
+  <section className="relative pt-20 sm:pt-24 pb-16 sm:pb-20 px-4 sm:px-6 overflow-hidden" id="projects">
+    {/* ── Atmospheric Background ── */}
+    <div className="section-glow-showcase" aria-hidden="true" />
+    <div className="absolute inset-0 cyber-grid-bg opacity-50 pointer-events-none" aria-hidden="true" />
+    <div className="absolute top-10 right-0 w-[500px] h-[500px] rounded-full bg-primary/14 blur-[130px] pointer-events-none" aria-hidden="true" />
+    <div className="absolute bottom-10 left-0 w-[500px] h-[500px] rounded-full bg-secondary/12 blur-[130px] pointer-events-none" aria-hidden="true" />
 
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto relative z-10">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 28 }}

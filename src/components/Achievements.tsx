@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Award, ExternalLink, Trophy, BookOpen, Sparkles, Star } from 'lucide-react';
+import { ExternalLink, Trophy, BookOpen, Sparkles, Star } from 'lucide-react';
 
 interface Certificate {
     title: string;
@@ -33,7 +33,7 @@ const certificates: Certificate[] = [
         issuer: 'CodeTantra',
         date: 'May 2025',
         type: 'certification',
-        link: 'https://ljku.codetantra.com/cert/certificate.jsp?certId=CT1827-uqhl00D-cdw',
+        link: '/certificates/CodeTantra_Programming_in_C_Umang_Trivedi.pdf',
         description: 'Advanced C programming concepts including pointers, memory management, and data structures.',
     },
     {
@@ -204,9 +204,14 @@ const Achievements = () => {
     const otherCerts = certificates.filter(c => !c.featured);
 
     return (
-        <section className="py-24 sm:py-28 md:py-36 px-4 sm:px-6 relative" id="achievements">
-            <div className="section-glow-accent" />
-            <div className="max-w-6xl mx-auto">
+        <section className="pt-20 sm:pt-24 pb-16 sm:pb-20 px-4 sm:px-6 relative overflow-hidden" id="achievements">
+            {/* ── Atmospheric Background ── */}
+            <div className="section-glow-accent" aria-hidden="true" />
+            <div className="absolute inset-0 cyber-dots-bg opacity-35 pointer-events-none" aria-hidden="true" />
+            <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[550px] h-[350px] rounded-full bg-accent/12 blur-[130px] pointer-events-none" aria-hidden="true" />
+            <div className="absolute bottom-10 right-0 w-[450px] h-[450px] rounded-full bg-primary/14 blur-[130px] pointer-events-none" aria-hidden="true" />
+
+            <div className="max-w-6xl mx-auto relative z-10">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}

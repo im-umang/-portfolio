@@ -18,23 +18,27 @@ const queryClient = new QueryClient({
 /* ── Premium Loading Screen ── */
 const LoadingScreen = ({ onDone }: { onDone: () => void }) => {
   const [progress, setProgress] = useState(0);
-  const [phase,    setPhase]    = useState<'loading' | 'done'>('loading');
 
   useEffect(() => {
     let p = 0;
+    let timerId: ReturnType<typeof setTimeout>;
+
     const step = () => {
       p += Math.random() * 14 + 4;
       if (p >= 100) {
         setProgress(100);
-        setPhase('done');
-        setTimeout(onDone, 500);
+        timerId = setTimeout(onDone, 500);
       } else {
         setProgress(Math.min(p, 99));
-        setTimeout(step, 60 + Math.random() * 60);
+        timerId = setTimeout(step, 60 + Math.random() * 60);
       }
     };
     step();
-  }, []);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [onDone]);
 
   return (
     <motion.div

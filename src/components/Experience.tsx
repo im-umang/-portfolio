@@ -165,9 +165,14 @@ const Experience = () => {
     const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
     return (
-        <section ref={sectionRef} className="py-24 sm:py-28 md:py-36 px-4 sm:px-6 relative" id="experience">
-            <div className="section-glow-primary" />
-            <div className="max-w-5xl mx-auto">
+        <section ref={sectionRef} className="pt-20 sm:pt-24 pb-16 sm:pb-20 px-4 sm:px-6 relative overflow-hidden" id="experience">
+            {/* ── Atmospheric Background ── */}
+            <div className="section-glow-primary" aria-hidden="true" />
+            <div className="absolute inset-0 cyber-dots-bg opacity-35 pointer-events-none" aria-hidden="true" />
+            <div className="absolute top-1/3 -left-32 w-[450px] h-[450px] rounded-full bg-primary/14 blur-[130px] pointer-events-none" aria-hidden="true" />
+            <div className="absolute bottom-1/4 -right-32 w-[450px] h-[450px] rounded-full bg-secondary/12 blur-[130px] pointer-events-none" aria-hidden="true" />
+
+            <div className="max-w-5xl mx-auto relative z-10">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
