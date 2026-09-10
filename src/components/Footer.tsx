@@ -75,12 +75,24 @@ const Footer = ({ onSelectSection }: FooterProps) => {
             {/* Column 1: Brand Info */}
             <motion.div variants={itemVariants} className="md:col-span-6 lg:col-span-6 flex flex-col justify-between">
               <div>
-                <h3 className="font-display font-black text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight uppercase mb-2.5">
-                  UMANG TRIVEDI
-                </h3>
-                <p className="text-[11px] sm:text-xs font-mono uppercase tracking-[0.2em] text-secondary mb-4 font-semibold">
-                  MCA STUDENT • FULL-STACK × MERN SPECIALIST
-                </p>
+                <div className="flex items-center gap-3.5 mb-4">
+                  <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-surface/90 border border-primary/30 shadow-[0_0_20px_-3px_rgba(59,91,255,0.35)] p-1.5 backdrop-blur-md overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/25 via-transparent to-secondary/20 opacity-80" />
+                    <img
+                      src="/ut-logo.png"
+                      alt="Umang Trivedi UT Monogram"
+                      className="w-full h-full object-contain relative z-10 filter contrast-125 drop-shadow-[0_2px_8px_rgba(0,189,255,0.4)]"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-display font-black text-2xl sm:text-3xl text-white tracking-tight uppercase">
+                      UMANG TRIVEDI
+                    </h3>
+                    <p className="text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.2em] text-secondary font-semibold">
+                      MCA STUDENT • FULL-STACK × MERN SPECIALIST
+                    </p>
+                  </div>
+                </div>
                 <p className="text-xs sm:text-sm text-white/40 leading-relaxed max-w-md">
                   Spatial digital architecture portfolio representing technical computing systems, scalable full-stack applications, and enterprise web operations.
                 </p>

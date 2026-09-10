@@ -6,6 +6,7 @@ const CustomCursor = () => {
     const [mounted, setMounted] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
+    const [isProjectHover, setIsProjectHover] = useState(false);
     const [isClicking, setIsClicking] = useState(false);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -35,14 +36,15 @@ const CustomCursor = () => {
             if (!target) return;
             const isClickable = target.closest('a, button, [role="button"], .cursor-pointer');
             const isInput = target.closest('input, textarea, select');
+            const isProject = target.closest('[data-cursor="project"], .project-card, article');
             setIsHovering(!!isClickable && !isInput);
+            setIsProjectHover(!!isProject);
         };
 
         const onMouseDown = () => setIsClicking(true);
         const onMouseUp = () => setIsClicking(false);
 
         const onMouseLeave = (e: MouseEvent) => {
-            // Only hide if the cursor genuinely exits the browser viewport bounds
             if (
                 e.clientY <= 0 ||
                 e.clientX <= 0 ||
@@ -88,17 +90,20 @@ const CustomCursor = () => {
                 }}
                 animate={{
                     opacity: isVisible ? 1 : 0,
-                    scale: isClicking ? 0.5 : 1,
+                    scale: isClicking ? 0.5 : isProjectHover ? 1.4 : 1,
                 }}
                 transition={{ duration: 0.08 }}
             >
                 <div
-                    className="w-[7px] h-[7px] rounded-full shadow-[0_0_8px_hsl(var(--primary))]"
-                    style={{ background: 'hsl(var(--primary))' }}
+                    className="w-[7px] h-[7px] rounded-full transition-colors duration-200"
+                    style={{
+                        background: isProjectHover ? 'hsl(var(--secondary))' : 'hsl(var(--primary))',
+                        boxShadow: isProjectHover ? '0 0 12px hsl(var(--secondary))' : '0 0 8px hsl(var(--primary))',
+                    }}
                 />
             </motion.div>
 
-            {/* Trailing Outer Ring */}
+            {/* Trailing Outer Ring with project hover highlight */}
             <motion.div
                 className="fixed top-0 left-0 pointer-events-none"
                 style={{
@@ -110,17 +115,28 @@ const CustomCursor = () => {
                 }}
                 animate={{
                     opacity: isVisible ? 1 : 0,
-                    scale: isHovering ? 1.7 : isClicking ? 0.8 : 1,
-                    borderColor: isHovering ? 'hsl(var(--primary))' : 'rgba(255,255,255,0.35)',
+                    scale: isClicking ? 0.8 : isProjectHover ? 2.3 : isHovering ? 1.7 : 1,
                 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 24 }}
             >
                 <div
-                    className="w-[30px] h-[30px] rounded-full border border-white/30"
+                    className="w-[30px] h-[30px] rounded-full border transition-all duration-200"
                     style={{
-                        borderColor: isHovering ? 'hsl(var(--primary))' : undefined,
-                        background: isHovering ? 'hsl(var(--primary) / 0.08)' : 'transparent',
-                        boxShadow: isHovering ? '0 0 15px hsl(var(--primary) / 0.35)' : 'none',
+                        borderColor: isProjectHover
+                            ? 'hsl(var(--secondary))'
+                            : isHovering
+                            ? 'hsl(var(--primary))'
+                            : 'rgba(255,255,255,0.35)',
+                        background: isProjectHover
+                            ? 'hsl(var(--secondary) / 0.14)'
+                            : isHovering
+                            ? 'hsl(var(--primary) / 0.08)'
+                            : 'transparent',
+                        boxShadow: isProjectHover
+                            ? '0 0 24px hsl(var(--secondary) / 0.6), inset 0 0 10px hsl(var(--secondary) / 0.25)'
+                            : isHovering
+                            ? '0 0 15px hsl(var(--primary) / 0.35)'
+                            : 'none',
                     }}
                 />
             </motion.div>

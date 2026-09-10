@@ -8,8 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
 import SmoothScroll from "@/components/SmoothScroll";
 
-const Index    = lazy(() => import("./pages/Index"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const Index          = lazy(() => import("./pages/Index"));
+const ProjectsPage   = lazy(() => import("./pages/ProjectsPage"));
+const ProjectDetail  = lazy(() => import("./pages/ProjectDetail"));
+const NotFound       = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 5 * 60 * 1000 } },
@@ -152,8 +154,10 @@ const App = () => {
             <BrowserRouter>
               <Suspense fallback={null}>
                 <Routes>
-                  <Route path="/"  element={<Index />} />
-                  <Route path="*" element={<NotFound />} />
+                  <Route path="/"                       element={<Index />} />
+                  <Route path="/projects"               element={<ProjectsPage />} />
+                  <Route path="/projects/:slug"         element={<ProjectDetail />} />
+                  <Route path="*"                       element={<NotFound />} />
                 </Routes>
               </Suspense>
             </BrowserRouter>

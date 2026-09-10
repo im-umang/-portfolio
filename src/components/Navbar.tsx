@@ -131,30 +131,17 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
               className="flex items-center gap-2.5 sm:gap-3 group select-none text-left cursor-pointer bg-transparent border-none p-0"
               aria-label="Umang Trivedi – Home"
             >
-              {/* Glowing Theme Emblem */}
-              <div className="relative flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-surface/90 border border-primary/30 group-hover:border-primary/70 transition-all duration-300 shadow-[0_0_20px_-3px_rgba(59,91,255,0.35)] group-hover:shadow-[0_0_25px_-2px_rgba(0,189,255,0.6)] overflow-hidden backdrop-blur-md">
+              {/* Glowing Theme Emblem with Official UT Logo */}
+              <div className="relative flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-surface/90 border border-primary/30 group-hover:border-primary/70 transition-all duration-300 shadow-[0_0_20px_-3px_rgba(59,91,255,0.35)] group-hover:shadow-[0_0_25px_-2px_rgba(0,189,255,0.6)] overflow-hidden backdrop-blur-md p-1.5">
                 {/* Subtle gradient background shimmer */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/25 via-transparent to-secondary/20 opacity-80 group-hover:opacity-100 transition-opacity" />
                 
-                {/* Stylized UT Vector Monogram */}
-                <svg viewBox="0 0 40 40" className="w-6 h-6 sm:w-7 sm:h-7 relative z-10 transition-transform duration-300 group-hover:scale-110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="ut-nav-logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="hsl(226, 100%, 65%)" />
-                      <stop offset="100%" stopColor="hsl(192, 100%, 50%)" />
-                    </linearGradient>
-                    <linearGradient id="ut-nav-slash-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="hsl(192, 100%, 50%)" />
-                      <stop offset="100%" stopColor="hsl(226, 100%, 65%)" />
-                    </linearGradient>
-                  </defs>
-                  {/* T */}
-                  <path d="M7 12 H21 M14 12 V29" stroke="url(#ut-nav-logo-grad)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                  {/* Modern slash cut */}
-                  <path d="M12 30 L28 10" stroke="url(#ut-nav-slash-grad)" strokeWidth="2" strokeLinecap="round" opacity="0.85" />
-                  {/* U */}
-                  <path d="M22 17 V24 C22 27.5 24 29 27.5 29 C31 29 33 27.5 33 24 V17" stroke="url(#ut-nav-logo-grad)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                {/* Authentic UT Monogram Logo Image */}
+                <img
+                  src="/ut-logo.png"
+                  alt="Umang Trivedi UT Monogram"
+                  className="w-full h-full object-contain relative z-10 transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_2px_8px_rgba(0,189,255,0.4)] filter contrast-125"
+                />
 
                 {/* Subtle glowing ring on hover */}
                 <div className="absolute -inset-0.5 rounded-xl border border-secondary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
