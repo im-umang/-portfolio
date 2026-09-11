@@ -86,12 +86,16 @@ const Footer = ({ onSelectSection }: FooterProps) => {
                     />
                   </div>
                   <div>
-                    <h3 className="font-display font-black text-2xl sm:text-3xl text-white tracking-tight uppercase">
-                      UMANG TRIVEDI
+                    <h3 className="flex items-center gap-2 font-display font-extrabold text-2xl sm:text-3xl tracking-tight">
+                      <span className="text-white">Umang</span>
+                      <span className="text-gradient-blue">Trivedi</span>
                     </h3>
-                    <p className="text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.2em] text-secondary font-semibold">
-                      MCA STUDENT • FULL-STACK × MERN SPECIALIST
-                    </p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.18em] text-white/55 font-semibold">
+                        Full-Stack Dev • MERN Specialist
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <p className="text-xs sm:text-sm text-white/40 leading-relaxed max-w-md">

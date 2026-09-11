@@ -171,10 +171,9 @@ const TestimonialCard = ({ item }: { item: Testimonial }) => {
                 {item.name}
               </h4>
               {item.verified && (
-                <CheckCircle2
-                  className="w-3.5 h-3.5 text-cyan-400 shrink-0"
-                  title="Verified Endorsement"
-                />
+                <span title="Verified Endorsement" className="inline-flex shrink-0">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
+                </span>
               )}
             </div>
             <p className="text-[10px] sm:text-[11px] text-white/45 font-mono truncate">
