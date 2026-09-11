@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { FaReact, FaNodeJs, FaFigma, FaGitAlt, FaPython, FaGithub } from 'react-icons/fa';
 import { SiNextdotjs, SiTypescript, SiTailwindcss, SiPostgresql, SiMongodb, SiExpress, SiMysql, SiVercel } from 'react-icons/si';
 import { Layers } from 'lucide-react';
+import { sound } from '@/lib/sound';
 
 interface Tech {
   name: string;
@@ -47,6 +48,7 @@ const TechChip = ({ tech }: { tech: Tech }) => (
     target="_blank"
     rel="noopener noreferrer"
     aria-label={tech.name}
+    onClick={() => sound.playClick()}
     whileHover={{ scale: 1.05, y: -4 }}
     whileTap={{ scale: 0.95 }}
     className="group relative glass-card rounded-2xl p-4 flex flex-col justify-between cursor-pointer overflow-hidden border border-white/[0.07] hover:border-cyan-500/35 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300"
@@ -140,7 +142,10 @@ const TechStack = () => {
             {CATS.map(cat => (
               <motion.button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => {
+                  sound.playClick();
+                  setActiveCategory(cat);
+                }}
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.94 }}
                 className="px-4 py-2 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-300"

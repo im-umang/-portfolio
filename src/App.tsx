@@ -9,6 +9,7 @@ import { ThemeProvider } from "next-themes";
 import SmoothScroll from "@/components/SmoothScroll";
 import CommandPalette from "@/components/CommandPalette";
 import FloatingDock from "@/components/FloatingDock";
+import UmangAIAssistant from "@/components/UmangAIAssistant";
 
 const Index          = lazy(() => import("./pages/Index"));
 const ProjectsPage   = lazy(() => import("./pages/ProjectsPage"));
@@ -167,6 +168,7 @@ const App = () => {
             <BrowserRouter>
               <CommandPalette isOpen={commandOpen} onClose={() => setCommandOpen(false)} />
               <FloatingDock onOpenCommandPalette={() => setCommandOpen(true)} />
+              <UmangAIAssistant />
 
               <Suspense fallback={null}>
                 <Routes>

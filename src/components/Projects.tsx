@@ -4,6 +4,7 @@ import { Eye, ArrowUpRight, Github, Star, ExternalLink, Sparkles, Code2, Trophy,
 import { Link } from 'react-router-dom';
 import { PROJECTS_DATA, Project } from '@/data/projectsData';
 import QuickViewModal from '@/components/QuickViewModal';
+import { sound } from '@/lib/sound';
 
 /* ─────────────────────────────────────────────────────────── */
 /*  STATUS BADGE HELPER                                        */
@@ -108,7 +109,10 @@ function ProjectCard({
 
             <button
               type="button"
-              onClick={() => onQuickView(project)}
+              onClick={() => {
+                sound.playClick();
+                onQuickView(project);
+              }}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium text-white/70 hover:text-white bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 transition-all cursor-pointer shadow-sm"
               aria-label={`Quick view for ${project.title}`}
             >
@@ -260,7 +264,10 @@ const Projects = () => {
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setSelectedCategory(tab.id)}
+                  onClick={() => {
+                    sound.playClick();
+                    setSelectedCategory(tab.id);
+                  }}
                   className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full font-mono text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer ${
                     isActive
                       ? 'text-white border border-cyan-400/40 bg-cyan-500/15 shadow-[0_0_12px_rgba(0,189,255,0.25)]'

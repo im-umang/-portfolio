@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { toast } from 'sonner';
+import { sound } from '@/lib/sound';
 
 const Contact = () => {
   const DRAFT_KEY = 'umang_contact_draft';
@@ -78,6 +79,7 @@ const Contact = () => {
   };
 
   const handleCopyEmail = () => {
+    sound.playClick();
     navigator.clipboard.writeText('utrivedi80@gmail.com');
     setCopied(true);
     toast.success('Email copied to clipboard: utrivedi80@gmail.com');
@@ -100,11 +102,13 @@ const Contact = () => {
       return;
     }
 
+    sound.playClick();
     setIsSubmitting(true);
 
     // Simulate API delivery
     await new Promise((resolve) => setTimeout(resolve, 1200));
 
+    sound.playPop();
     setIsSubmitting(false);
     toast.success(`Thank you, ${formData.name}! Your message has been sent. Umang will reply shortly.`);
     localStorage.removeItem(DRAFT_KEY);
