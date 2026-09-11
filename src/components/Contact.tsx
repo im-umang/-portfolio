@@ -82,14 +82,14 @@ const Contact = () => {
           transition={{ duration: 0.65 }}
           className="text-center mb-16 md:mb-20"
         >
-          <div className="section-label mx-auto mb-6">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
+          <div className="section-label mx-auto mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
             <span>Get In Touch</span>
           </div>
-          <h2 className="font-display font-black text-4xl sm:text-5xl md:text-6xl mb-4 text-white">
+          <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl mb-3 tracking-tight text-white">
             Let's Build Something <span className="text-gradient">Extraordinary</span>
           </h2>
-          <p className="text-white/45 text-sm sm:text-base max-w-xl mx-auto">
+          <p className="text-white/55 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed">
             Available for full-time software engineering roles, hackathons, and freelance full-stack projects.
           </p>
         </motion.div>

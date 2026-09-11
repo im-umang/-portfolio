@@ -62,9 +62,9 @@ export default {
         },
       },
       fontFamily: {
-        sans:    ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-        display: ["Syne", "sans-serif"],
-        mono:    ["JetBrains Mono", "monospace"],
+        sans:    ["'Plus Jakarta Sans'", "Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        display: ["'Plus Jakarta Sans'", "Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        mono:    ["'JetBrains Mono'", "monospace"],
       },
       borderRadius: {
         lg: "var(--radius)",

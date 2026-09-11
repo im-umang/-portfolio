@@ -52,148 +52,107 @@ const FeaturedCard = ({ cert }: { cert: Certificate }) => {
             href={cert.link}
             target="_blank"
             rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ y: -6, scale: 1.01 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            whileHover={{ y: -4, scale: 1.005 }}
             whileTap={{ scale: 0.99 }}
-            className="group relative block rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer shimmer"
-            style={{
-                background: 'linear-gradient(135deg, rgba(0,189,255,0.12) 0%, rgba(139,92,246,0.08) 50%, rgba(0,0,0,0.3) 100%)',
-                border: '1px solid rgba(0,189,255,0.3)',
-            }}
+            className="group relative block rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer border border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 via-primary/5 to-black/40 p-6 sm:p-8 md:p-9 shadow-[0_8px_32px_rgba(0,189,255,0.08)] hover:border-cyan-400/50 transition-all duration-300"
             aria-label={`View ${cert.title} certificate`}
         >
-            {/* Animated border gradient */}
-            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ background: 'linear-gradient(135deg, rgba(0,189,255,0.08), rgba(139,92,246,0.08))' }}
-            />
+            {/* Top accent line */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
 
-            {/* Top line */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent" />
-
-            {/* Recent badge */}
-            <div className="absolute top-0 right-0 z-10">
-                <div className="bg-primary text-black text-[9px] font-black uppercase tracking-widest px-4 py-1.5 rounded-bl-xl">
-                    🏆 Hackathon Achievement
+            <div className="flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-7 relative z-10">
+                {/* Trophy Insignia */}
+                <div className="flex-shrink-0">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center shadow-[0_0_20px_rgba(0,189,255,0.25)] group-hover:scale-105 transition-transform duration-300">
+                        <Trophy className="w-7 h-7 text-cyan-400" />
+                    </div>
                 </div>
-            </div>
 
-            <div className="relative z-10 p-6 sm:p-8 md:p-10">
-                <div className="flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-8">
-                    {/* Trophy Icon */}
-                    <motion.div
-                        animate={{ rotate: [0, -8, 8, 0] }}
-                        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                        className="flex-shrink-0"
-                    >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary/15 border-2 border-primary/30 flex items-center justify-center shadow-[0_0_30px_rgba(0,189,255,0.3)]">
-                            <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
-                        </div>
-                    </motion.div>
-
-                    <div className="flex-1">
-                        <div className="flex flex-wrap items-center gap-2 mb-3">
-                            <span className="px-3 py-1 text-[9px] uppercase font-bold tracking-widest rounded-full bg-primary/15 text-primary border border-primary/30">
-                                Hackathon
+                <div className="flex-1">
+                    <div className="flex flex-wrap items-center justify-between gap-2.5 mb-3">
+                        <div className="flex items-center gap-2">
+                            <span className="px-2.5 py-0.5 text-[11px] font-mono font-semibold tracking-wider rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-400/30">
+                                24-Hour Hackathon
                             </span>
                             {cert.date && (
-                                <span className="text-xs text-white/40 font-mono">{cert.date}</span>
+                                <span className="text-xs text-white/50 font-mono">{cert.date}</span>
                             )}
-                            <div className="flex items-center gap-1 ml-auto">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                                ))}
-                            </div>
                         </div>
 
-                        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white group-hover:text-primary transition-colors mb-2">
-                            {cert.title}
-                        </h3>
-                        <p className="text-sm sm:text-base font-semibold text-white/60 mb-3">{cert.issuer}</p>
-                        {cert.description && (
-                            <p className="text-xs sm:text-sm text-white/40 leading-relaxed mb-5">{cert.description}</p>
-                        )}
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-400/20">
+                            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                            Official Distinction
+                        </span>
+                    </div>
 
-                        <div className="flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
-                            <ExternalLink className="w-4 h-4" />
-                            <span>View Certificate</span>
-                        </div>
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white group-hover:text-cyan-300 transition-colors mb-2 tracking-tight">
+                        {cert.title}
+                    </h3>
+                    <p className="text-sm sm:text-base font-medium text-white/70 mb-3">{cert.issuer}</p>
+                    {cert.description && (
+                        <p className="text-xs sm:text-sm text-white/55 leading-relaxed mb-5 font-light">{cert.description}</p>
+                    )}
+
+                    <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-cyan-400 group-hover:text-cyan-300 group-hover:gap-2.5 transition-all">
+                        <span>View Verified Certificate</span>
+                        <ExternalLink className="w-4 h-4" />
                     </div>
                 </div>
             </div>
-
-            {/* Bottom glow */}
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
         </motion.a>
     );
 };
 
 // Regular Certification Card
 const CertCard = ({ cert, index }: { cert: Certificate; index: number }) => {
-    const isHackathon = cert.type === 'hackathon';
-    const accentColor = isHackathon ? 'rgba(0,189,255,1)' : 'rgba(139,92,246,1)';
-    const accentBg = isHackathon ? 'rgba(0,189,255,0.1)' : 'rgba(139,92,246,0.1)';
-
     return (
         <motion.a
             href={cert.link}
             target="_blank"
             rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.3 } }}
+            transition={{ duration: 0.5, delay: index * 0.08 }}
+            whileHover={{ y: -4, scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
-            className="group relative block glass-card rounded-2xl overflow-hidden cursor-pointer shimmer"
+            className="group relative block rounded-2xl border border-white/[0.08] hover:border-cyan-500/35 bg-white/[0.02] hover:bg-white/[0.04] p-5 sm:p-6 transition-all duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_30px_rgba(0,189,255,0.08)] cursor-pointer"
             aria-label={`View ${cert.title}`}
         >
-            {/* Top accent */}
-            <div className="h-0.5 w-full" style={{ background: `linear-gradient(90deg, ${accentColor}, transparent)` }} />
-
-            <div className="p-5 sm:p-6">
-                <div className="flex items-start justify-between mb-4">
-                    <div
-                        className="p-2.5 sm:p-3 rounded-xl"
-                        style={{ background: accentBg, border: `1px solid ${accentColor}30` }}
-                    >
-                        <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: accentColor }} />
-                    </div>
-                    <span
-                        className="text-[9px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full"
-                        style={{ background: accentBg, color: accentColor, border: `1px solid ${accentColor}30` }}
-                    >
-                        Certification
-                    </span>
+            <div className="flex items-start justify-between mb-4">
+                <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-400/25">
+                    <BookOpen className="w-5 h-5 text-cyan-400" />
                 </div>
+                <span className="text-[10px] font-mono uppercase font-semibold tracking-wider px-2.5 py-1 rounded-full bg-white/[0.04] text-white/60 border border-white/10">
+                    Certification
+                </span>
+            </div>
 
-                <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-primary transition-colors mb-1.5 leading-snug">
-                    {cert.title}
-                </h3>
+            <h3 className="font-display font-bold text-base text-white group-hover:text-cyan-300 transition-colors mb-1.5 leading-snug tracking-tight">
+                {cert.title}
+            </h3>
 
-                <div className="flex flex-wrap items-center gap-2 text-xs text-white/50 mb-3">
-                    <span className="font-medium text-white/70">{cert.issuer}</span>
-                    {cert.date && (
-                        <>
-                            <span className="w-1 h-1 rounded-full bg-white/30" />
-                            <span>{cert.date}</span>
-                        </>
-                    )}
-                </div>
-
-                {cert.description && (
-                    <p className="text-[11px] text-white/35 leading-relaxed mb-4">{cert.description}</p>
+            <div className="flex flex-wrap items-center gap-2 text-xs text-white/50 mb-3">
+                <span className="font-medium text-white/75">{cert.issuer}</span>
+                {cert.date && (
+                    <>
+                        <span className="text-white/20">•</span>
+                        <span className="font-mono text-[11px]">{cert.date}</span>
+                    </>
                 )}
+            </div>
 
-                <div
-                    className="flex items-center gap-1.5 text-xs font-medium transition-colors"
-                    style={{ color: accentColor }}
-                >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    <span>View Certificate</span>
-                </div>
+            {cert.description && (
+                <p className="text-xs text-white/50 leading-relaxed mb-4 font-light">{cert.description}</p>
+            )}
+
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-cyan-400 group-hover:text-cyan-300 transition-colors pt-3 border-t border-white/[0.06]">
+                <span>Verify Credential</span>
+                <ExternalLink className="w-3.5 h-3.5" />
             </div>
         </motion.a>
     );
@@ -205,31 +164,28 @@ const Achievements = () => {
 
     return (
         <section className="pt-20 sm:pt-24 pb-16 sm:pb-20 px-4 sm:px-6 relative overflow-hidden" id="achievements">
-            {/* ── Atmospheric Background ── */}
+            {/* Background Ambience */}
             <div className="section-glow-accent" aria-hidden="true" />
-            <div className="absolute inset-0 cyber-dots-bg opacity-35 pointer-events-none" aria-hidden="true" />
-            <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[550px] h-[350px] rounded-full bg-accent/12 blur-[130px] pointer-events-none" aria-hidden="true" />
-            <div className="absolute bottom-10 right-0 w-[450px] h-[450px] rounded-full bg-primary/14 blur-[130px] pointer-events-none" aria-hidden="true" />
+            <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[550px] h-[350px] rounded-full bg-cyan-500/10 blur-[130px] pointer-events-none" aria-hidden="true" />
 
             <div className="max-w-6xl mx-auto relative z-10">
                 {/* Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.7 }}
-                    className="text-center mb-16 md:mb-20"
+                    transition={{ duration: 0.55 }}
+                    className="text-center mb-12 md:mb-16"
                 >
-                    <div className="section-label mx-auto mb-6">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        <span>Achievements & Certs</span>
+                    <div className="section-label mx-auto mb-4">
+                        <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>Honors & Certifications</span>
                     </div>
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4">
-                        Learning &{' '}
-                        <span className="text-gradient">Recognition</span>
+                    <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl mb-3 tracking-tight text-white">
+                        Learning & <span className="text-gradient">Recognition</span>
                     </h2>
-                    <p className="text-white/50 text-sm sm:text-base max-w-xl mx-auto">
-                        Continuous growth through real-world challenges and certified learning
+                    <p className="text-white/55 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed">
+                        Continuous skill validation through hackathon execution and professional engineering courses.
                     </p>
                 </motion.div>
 
