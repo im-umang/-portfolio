@@ -281,7 +281,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
                   <div className="space-y-1 mt-1">
                     {filteredProjects.map((p) => (
                       <button
-                        key={p.id}
+                        key={p.slug}
                         type="button"
                         onClick={() => executeAction(() => navigate(`/projects/${p.slug}`))}
                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/[0.06] text-white/80 hover:text-white transition-colors cursor-pointer group text-left"
