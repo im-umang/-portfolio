@@ -139,7 +139,7 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
             <button
               type="button"
               onClick={(e) => handleItemClick(e, 'home')}
-              className="flex items-center gap-2.5 sm:gap-3 group select-none text-left cursor-pointer bg-transparent border-none p-0"
+              className="flex items-center gap-2.5 sm:gap-3 group select-none text-left cursor-pointer bg-transparent border-none p-0 mr-6 md:mr-10 lg:mr-14 shrink-0"
               aria-label="Umang Trivedi – Home"
             >
               {/* Glowing Theme Emblem with Official UT Logo */}
