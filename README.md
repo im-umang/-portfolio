@@ -42,41 +42,57 @@ The portfolio features a modern UI, responsive design, and clean code structure 
 ├── vite.config.ts
 ├── package.json
 └── README.md
-⚙️ Installation & Setup
+```
+
+---
+
+## ⚙️ Installation & Setup
 
 Clone the repository:
 
+```bash
 git clone https://github.com/im-umang/-portfolio.git
-
+```
 
 Navigate to the project directory:
 
+```bash
 cd -portfolio
-
+```
 
 Install dependencies:
 
+```bash
 npm install
-
+```
 
 Start the development server:
 
+```bash
 npm run dev
+```
 
-🌐 Live Preview
+---
 
-Deployment link will be added soon.
+## 🌐 Live Preview
 
-📌 Purpose
+🔗 **[https://umang-trivedi.vercel.app/](https://umang-trivedi.vercel.app/)**
+
+---
+
+## 📌 Purpose
 
 This portfolio is created to:
 
-Showcase my frontend & web development skills
+- Showcase my frontend & web development skills
+- Present my projects in a professional manner
+- Use as a personal brand & placement portfolio
 
-Present my projects in a professional manner
+---
 
-Use as a personal brand & placement portfolio
+## 🤝 Connect With Me
 
-🤝 Connect With Me
-
-GitHub: https://github.com/im-umang
+- **GitHub:** [https://github.com/im-umang](https://github.com/im-umang)
+- **LinkedIn:** [https://www.linkedin.com/in/umang-trivedi31101](https://www.linkedin.com/in/umang-trivedi31101)
+- **Email:** [utrivedi80@gmail.com](mailto:utrivedi80@gmail.com)
+- **WhatsApp:** [+91 63522 96575](https://wa.me/916352296575)
