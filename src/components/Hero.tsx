@@ -2,16 +2,16 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowRight, Download, Sparkles } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 /* ─────────────────────────────────────── */
 /*  CONSTANTS                              */
 /* ─────────────────────────────────────── */
 const ROLES = [
   'Full-Stack Developer',
-  'MERN Stack Engineer',
-  'UI/UX Enthusiast',
-  'React Specialist',
-  'Problem Solver',
+  'AI Application Builder',
+  'React Developer',
+  'Digital Creator',
 ];
 
 const STATS = [
@@ -82,6 +82,7 @@ const StatCard = ({
 /*  HERO COMPONENT                         */
 /* ─────────────────────────────────────── */
 const Hero = () => {
+  const navigate = useNavigate();
   const [mounted,     setMounted]     = useState(false);
   const [statsInView, setStatsInView] = useState(false);
   const [spotlight,   setSpotlight]   = useState({ x: 50, y: 50 });
@@ -140,9 +141,14 @@ const Hero = () => {
     });
   }, []);
 
-  /* scroll helper */
+  /* navigation / scroll helper */
   const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (id === 'contact') {
+      navigate('/contact');
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   return (
@@ -261,37 +267,58 @@ const Hero = () => {
           initial={{ opacity: 0, y: 18 }}
           animate={mounted ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.55, delay: 0.58, ease: 'easeOut' }}
-          className="flex flex-col xs:flex-row items-center justify-center gap-4 mb-10"
+          className="flex flex-col xs:flex-row items-center justify-center gap-4 mb-7"
         >
-          {/* Primary */}
+          {/* Primary CTA */}
           <motion.button
-            onClick={() => scrollTo('contact')}
+            onClick={() => {
+              navigate('/contact');
+              window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+            }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
-            className="relative inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full font-bold text-white text-sm sm:text-base overflow-hidden group cursor-pointer"
+            className="relative inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full font-bold text-white text-sm sm:text-base overflow-hidden group cursor-pointer shadow-[0_0_25px_hsl(var(--primary)/0.3)]"
             style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}
           >
             <span className="relative z-10 flex items-center gap-2">
               <Sparkles className="w-4 h-4" />
-              Let's Work Together
+              LET'S WORK TOGETHER
             </span>
-            {/* shimmer overlay */}
             <span className="absolute inset-0 bg-white/10 translate-x-[-110%] group-hover:translate-x-[110%] transition-transform duration-700 skew-x-[-20deg]" />
           </motion.button>
 
-          {/* Secondary */}
-          <motion.a
+          {/* Secondary CTA */}
+          <motion.button
+            onClick={() => {
+              navigate('/projects');
+              window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+            }}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-white/85 hover:text-white text-sm sm:text-base glass border border-white/[0.12] hover:border-cyan-400/40 transition-all duration-300 cursor-pointer"
+          >
+            <span>VIEW MY WORK</span>
+            <ArrowRight className="w-4 h-4" />
+          </motion.button>
+        </motion.div>
+
+        {/* Download Resume Shortcut */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={mounted ? { opacity: 1 } : {}}
+          transition={{ duration: 0.45, delay: 0.64 }}
+          className="mb-8"
+        >
+          <a
             href="/resume/Umang_Trivedi_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             download
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-white/75 hover:text-white text-sm sm:text-base glass border border-white/[0.1] hover:border-white/25 transition-all duration-300"
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-white/45 hover:text-cyan-300 transition-colors"
           >
-            <Download className="w-4 h-4" />
-            Download CV
-          </motion.a>
+            <Download className="w-3.5 h-3.5" />
+            <span>Download Resume PDF</span>
+          </a>
         </motion.div>
 
         {/* Social Links */}

@@ -4,10 +4,10 @@ import Footer from '@/components/Footer';
 import CustomCursor from '@/components/CustomCursor';
 import ScrollProgress from '@/components/ScrollProgress';
 import ParticleCanvas from '@/components/ParticleCanvas';
-import Projects from '@/components/Projects';
+import Experience from '@/components/Experience';
 import SEO from '@/components/SEO';
 
-const ProjectsPage = () => {
+const ExperiencePage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, []);
@@ -15,29 +15,28 @@ const ProjectsPage = () => {
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden flex flex-col justify-between">
       <SEO
-        title="Projects & Case Studies"
-        description="Explore production client systems, real-time speech AI applications, full-stack platforms, and hackathon winning software engineered by Umang Trivedi."
-        canonical="/projects"
+        title="Experience & Career Journey"
+        description="Explore the professional work experience, technical mentorship, and software engineering milestones of Umang Trivedi."
+        canonical="/experience"
       />
 
       <CustomCursor />
       <ScrollProgress />
 
-      {/* Global Background */}
+      {/* Atmospheric Background Layers */}
       <div className="noise-bg" aria-hidden="true" />
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
         <div className="absolute inset-0 cyber-grid-bg opacity-75" />
-        <div className="absolute top-1/4 -left-32 w-[600px] h-[600px] rounded-full blur-[140px] opacity-20 bg-[radial-gradient(circle,hsl(var(--secondary)),transparent_70%)]" />
-        <div className="absolute top-1/3 -right-32 w-[650px] h-[650px] rounded-full blur-[160px] opacity-25 bg-[radial-gradient(circle,hsl(var(--primary)),transparent_70%)]" />
+        <div className="absolute top-1/4 -left-32 w-[600px] h-[600px] rounded-full blur-[140px] opacity-20 bg-[radial-gradient(circle,hsl(var(--primary)),transparent_70%)]" />
+        <div className="absolute top-1/3 -right-32 w-[650px] h-[650px] rounded-full blur-[160px] opacity-20 bg-[radial-gradient(circle,hsl(var(--secondary)),transparent_70%)]" />
         <div className="absolute bottom-20 left-1/3 w-[550px] h-[550px] rounded-full blur-[150px] opacity-15 bg-[radial-gradient(circle,hsl(var(--accent)),transparent_70%)]" />
       </div>
       <ParticleCanvas />
 
-      {/* Navigation */}
-      <Navbar activeSection="projects" />
+      <Navbar activeSection="experience" />
 
       <main className="relative z-10 flex-1 pt-12">
-        <Projects />
+        <Experience />
       </main>
 
       <Footer />
@@ -45,4 +44,4 @@ const ProjectsPage = () => {
   );
 };
 
-export default ProjectsPage;
+export default ExperiencePage;

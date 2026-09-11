@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
@@ -11,8 +11,14 @@ import CommandPalette from "@/components/CommandPalette";
 import UmangAIAssistant from "@/components/UmangAIAssistant";
 
 const Index          = lazy(() => import("./pages/Index"));
+const TechStackPage  = lazy(() => import("./pages/TechStackPage"));
 const ProjectsPage   = lazy(() => import("./pages/ProjectsPage"));
 const ProjectDetail  = lazy(() => import("./pages/ProjectDetail"));
+const ExperiencePage = lazy(() => import("./pages/ExperiencePage"));
+const EducationPage  = lazy(() => import("./pages/EducationPage"));
+const AwardsPage     = lazy(() => import("./pages/AwardsPage"));
+const ReviewsPage    = lazy(() => import("./pages/ReviewsPage"));
+const ContactPage    = lazy(() => import("./pages/ContactPage"));
 const NotFound       = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -171,8 +177,16 @@ const App = () => {
               <Suspense fallback={null}>
                 <Routes>
                   <Route path="/"                       element={<Index />} />
+                  <Route path="/stack"                  element={<TechStackPage />} />
                   <Route path="/projects"               element={<ProjectsPage />} />
                   <Route path="/projects/:slug"         element={<ProjectDetail />} />
+                  <Route path="/experience"             element={<ExperiencePage />} />
+                  <Route path="/education"              element={<EducationPage />} />
+                  <Route path="/awards"                 element={<AwardsPage />} />
+                  <Route path="/achievements"           element={<Navigate to="/awards" replace />} />
+                  <Route path="/reviews"                element={<ReviewsPage />} />
+                  <Route path="/testimonials"           element={<Navigate to="/reviews" replace />} />
+                  <Route path="/contact"                element={<ContactPage />} />
                   <Route path="*"                       element={<NotFound />} />
                 </Routes>
               </Suspense>

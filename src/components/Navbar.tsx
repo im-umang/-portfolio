@@ -4,16 +4,17 @@ import { cn } from '@/lib/utils';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { sound } from '@/lib/sound';
 import { toast } from 'sonner';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 
 const NAV_LINKS = [
-  { label: 'Home',       href: '#home',         id: 'home'        },
-  { label: 'Stack',      href: '#stack',        id: 'stack'       },
-  { label: 'Projects',   href: '#projects',     id: 'projects'    },
-  { label: 'Experience', href: '#experience',   id: 'experience'  },
-  { label: 'Education',  href: '#education',    id: 'education'   },
-  { label: 'Awards',     href: '#achievements', id: 'achievements'},
-  { label: 'Reviews',    href: '#testimonials', id: 'testimonials'},
-  { label: 'Contact',    href: '#contact',      id: 'contact'     },
+  { label: 'Home',       path: '/',           id: 'home'        },
+  { label: 'Stack',      path: '/stack',      id: 'stack'       },
+  { label: 'Projects',   path: '/projects',   id: 'projects'    },
+  { label: 'Experience', path: '/experience', id: 'experience'  },
+  { label: 'Education',  path: '/education',  id: 'education'   },
+  { label: 'Awards',     path: '/awards',     id: 'awards'      },
+  { label: 'Reviews',    path: '/reviews',    id: 'reviews'     },
+  { label: 'Contact',    path: '/contact',    id: 'contact'     },
 ];
 
 const mobileVariants: Variants = {
@@ -38,14 +39,29 @@ interface NavbarProps {
 }
 
 const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarProps) => {
-  const [scrolled,          setScrolled]          = useState(false);
-  const [hidden,            setHidden]            = useState(false);
-  const [menuOpen,          setMenuOpen]          = useState(false);
-  const [scrollActiveSection, setScrollActiveSection] = useState('home');
-  const [soundActive,       setSoundActive]       = useState(sound.isEnabled());
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [scrolled,    setScrolled]    = useState(false);
+  const [hidden,      setHidden]      = useState(false);
+  const [menuOpen,    setMenuOpen]    = useState(false);
+  const [soundActive, setSoundActive] = useState(sound.isEnabled());
   const lastScrollY = useRef(0);
 
-  const currentActive = activeSectionProp || scrollActiveSection;
+  // Compute active section based on current path
+  const getActiveIdFromPath = (): string => {
+    const p = location.pathname;
+    if (p.startsWith('/stack')) return 'stack';
+    if (p.startsWith('/projects')) return 'projects';
+    if (p.startsWith('/experience')) return 'experience';
+    if (p.startsWith('/education')) return 'education';
+    if (p.startsWith('/awards') || p.startsWith('/achievements')) return 'awards';
+    if (p.startsWith('/reviews') || p.startsWith('/testimonials')) return 'reviews';
+    if (p.startsWith('/contact')) return 'contact';
+    return 'home';
+  };
+
+  const currentActive = activeSectionProp || getActiveIdFromPath();
 
   /* ── Smart hide/show on scroll direction ── */
   useEffect(() => {
@@ -81,31 +97,21 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
     return () => window.removeEventListener('resize', close);
   }, []);
 
-  /* ── Active section via IntersectionObserver (when in full home view) ── */
-  useEffect(() => {
-    if (activeSectionProp && activeSectionProp !== 'home') return;
-
-    const obs = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) setScrollActiveSection(e.target.id); }),
-      { threshold: 0.25, rootMargin: '-72px 0px -40% 0px' }
-    );
-    NAV_LINKS.forEach(({ id }) => { const el = document.getElementById(id); if (el) obs.observe(el); });
-    return () => obs.disconnect();
-  }, [activeSectionProp]);
-
-  /* ── Navigation click handler ── */
-  const handleItemClick = (e: React.MouseEvent, id: string) => {
+  /* ── Navigation handler ── */
+  const handleItemClick = (e: React.MouseEvent, link: typeof NAV_LINKS[0]) => {
     e.preventDefault();
     sound.playClick();
     setMenuOpen(false);
+
     if (onSelectSection) {
-      onSelectSection(id);
+      onSelectSection(link.id);
+    }
+
+    if (location.pathname === link.path) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      const el = document.getElementById(id);
-      if (el) {
-        const top = el.getBoundingClientRect().top + window.scrollY - 72;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
+      navigate(link.path);
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     }
   };
 
@@ -136,25 +142,25 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
           <div className="flex items-center justify-between">
 
             {/* Branded Theme Logo */}
-            <button
-              type="button"
-              onClick={(e) => handleItemClick(e, 'home')}
-              className="flex items-center gap-2.5 sm:gap-3 group select-none text-left cursor-pointer bg-transparent border-none p-0 mr-6 md:mr-10 lg:mr-14 shrink-0"
+            <Link
+              to="/"
+              onClick={() => {
+                sound.playClick();
+                if (location.pathname === '/') window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="flex items-center gap-2.5 sm:gap-3 group select-none text-left cursor-pointer bg-transparent border-none p-0 mr-4 md:mr-8 lg:mr-12 shrink-0"
               aria-label="Umang Trivedi – Home"
             >
               {/* Glowing Theme Emblem with Official UT Logo */}
               <div className="relative flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-surface/90 border border-primary/30 group-hover:border-primary/70 transition-all duration-300 shadow-[0_0_20px_-3px_rgba(59,91,255,0.35)] group-hover:shadow-[0_0_25px_-2px_rgba(0,189,255,0.6)] overflow-hidden backdrop-blur-md p-1.5">
-                {/* Subtle gradient background shimmer */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/25 via-transparent to-secondary/20 opacity-80 group-hover:opacity-100 transition-opacity" />
                 
-                {/* Authentic UT Monogram Logo Image */}
                 <img
                   src="/ut-logo.png"
                   alt="Umang Trivedi UT Monogram"
                   className="w-full h-full object-contain relative z-10 transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_2px_8px_rgba(0,189,255,0.4)] filter contrast-125"
                 />
 
-                {/* Subtle glowing ring on hover */}
                 <div className="absolute -inset-0.5 rounded-xl border border-secondary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               </div>
 
@@ -175,18 +181,18 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
                   </span>
                 </div>
               </div>
-            </button>
+            </Link>
 
             {/* Desktop Links */}
             <nav className="hidden md:flex items-center gap-1 lg:gap-2" aria-label="Main navigation">
               <ul className="flex items-center gap-0.5">
                 {NAV_LINKS.map(link => {
-                  const active = currentActive === link.id || (link.id === 'home' && currentActive === 'all');
+                  const active = currentActive === link.id;
                   return (
                     <li key={link.id}>
-                      <a
-                        href={link.href}
-                        onClick={e => handleItemClick(e, link.id)}
+                      <Link
+                        to={link.path}
+                        onClick={e => handleItemClick(e, link)}
                         className="relative px-3 lg:px-3.5 py-2 flex items-center group cursor-pointer"
                         aria-current={active ? 'page' : undefined}
                       >
@@ -203,7 +209,7 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
                         )}>
                           {link.label}
                         </span>
-                      </a>
+                      </Link>
                     </li>
                   );
                 })}
@@ -224,10 +230,14 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
                 )}
               </button>
 
-              {/* Hire Me CTA */}
+              {/* Hire Me CTA — Links to /contact */}
               <motion.button
                 type="button"
-                onClick={e => handleItemClick(e, 'contact')}
+                onClick={() => {
+                  sound.playClick();
+                  navigate('/contact');
+                  window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+                }}
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 className="ml-2 px-4 sm:px-5 py-2 rounded-full text-xs lg:text-sm font-bold text-white cursor-pointer"
@@ -261,14 +271,14 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
                 aria-expanded={menuOpen}
                 className="p-2.5 rounded-xl glass-strong text-white/70 hover:text-white border border-white/[0.08]"
               >
-              <AnimatePresence mode="wait" initial={false}>
-                {menuOpen
-                  ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.13 }}><X size={18} /></motion.span>
-                  : <motion.span key="m" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.13 }}><Menu size={18} /></motion.span>
-                }
-              </AnimatePresence>
-            </motion.button>
-          </div>
+                <AnimatePresence mode="wait" initial={false}>
+                  {menuOpen
+                    ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.13 }}><X size={18} /></motion.span>
+                    : <motion.span key="m" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.13 }}><Menu size={18} /></motion.span>
+                  }
+                </AnimatePresence>
+              </motion.button>
+            </div>
 
           </div>
         </div>
@@ -295,12 +305,12 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
               role="menu"
             >
               {NAV_LINKS.map(link => {
-                const active = currentActive === link.id || (link.id === 'home' && currentActive === 'all');
+                const active = currentActive === link.id;
                 return (
                   <motion.li key={link.id} variants={itemVariants} role="none">
-                    <a
-                      href={link.href}
-                      onClick={e => handleItemClick(e, link.id)}
+                    <Link
+                      to={link.path}
+                      onClick={e => handleItemClick(e, link)}
                       role="menuitem"
                       aria-current={active ? 'page' : undefined}
                       className={cn(
@@ -312,7 +322,7 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
                     >
                       {active && <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />}
                       {link.label}
-                    </a>
+                    </Link>
                   </motion.li>
                 );
               })}
@@ -320,7 +330,12 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
               <motion.li variants={itemVariants} className="mt-2 px-2 pb-2">
                 <button
                   type="button"
-                  onClick={e => handleItemClick(e, 'contact')}
+                  onClick={() => {
+                    sound.playClick();
+                    setMenuOpen(false);
+                    navigate('/contact');
+                    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+                  }}
                   className="flex items-center justify-center py-3 rounded-xl text-sm font-bold text-white w-full cursor-pointer"
                   style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}
                 >
@@ -336,4 +351,3 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
 };
 
 export default Navbar;
-

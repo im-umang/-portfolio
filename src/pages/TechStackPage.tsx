@@ -4,10 +4,10 @@ import Footer from '@/components/Footer';
 import CustomCursor from '@/components/CustomCursor';
 import ScrollProgress from '@/components/ScrollProgress';
 import ParticleCanvas from '@/components/ParticleCanvas';
-import Projects from '@/components/Projects';
+import TechStack from '@/components/TechStack';
 import SEO from '@/components/SEO';
 
-const ProjectsPage = () => {
+const TechStackPage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, []);
@@ -15,15 +15,15 @@ const ProjectsPage = () => {
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden flex flex-col justify-between">
       <SEO
-        title="Projects & Case Studies"
-        description="Explore production client systems, real-time speech AI applications, full-stack platforms, and hackathon winning software engineered by Umang Trivedi."
-        canonical="/projects"
+        title="Technical Arsenal & Tech Stack"
+        description="Comprehensive tech stack, tools, frameworks, and datastores utilized by Umang Trivedi: React, TypeScript, Next.js, Node.js, Express, MongoDB, MySQL, Python, and cloud tools."
+        canonical="/stack"
       />
 
       <CustomCursor />
       <ScrollProgress />
 
-      {/* Global Background */}
+      {/* Atmospheric Background Layers */}
       <div className="noise-bg" aria-hidden="true" />
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
         <div className="absolute inset-0 cyber-grid-bg opacity-75" />
@@ -33,11 +33,10 @@ const ProjectsPage = () => {
       </div>
       <ParticleCanvas />
 
-      {/* Navigation */}
-      <Navbar activeSection="projects" />
+      <Navbar activeSection="stack" />
 
       <main className="relative z-10 flex-1 pt-12">
-        <Projects />
+        <TechStack />
       </main>
 
       <Footer />
@@ -45,4 +44,4 @@ const ProjectsPage = () => {
   );
 };
 
-export default ProjectsPage;
+export default TechStackPage;

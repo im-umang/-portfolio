@@ -19,6 +19,7 @@ import {
   Home,
   X,
   Sparkles,
+  MessageSquareQuote,
 } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { toast } from 'sonner';
@@ -72,17 +73,10 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
     onClose();
   }, [onClose]);
 
-  const handleScrollTo = (id: string) => {
+  const handleNavigateTo = (path: string) => {
     executeAction(() => {
-      if (window.location.pathname !== '/') {
-        navigate(`/#${id}`);
-      } else {
-        const el = document.getElementById(id);
-        if (el) {
-          const top = el.getBoundingClientRect().top + window.scrollY - 72;
-          window.scrollTo({ top, behavior: 'smooth' });
-        }
-      }
+      navigate(path);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   };
 
@@ -108,13 +102,14 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
   );
 
   const sections = [
-    { label: 'Home / Hero', id: 'home', icon: Home, desc: 'Intro & spatial headline' },
-    { label: 'Technical Arsenal', id: 'stack', icon: Layers, desc: 'Languages, frameworks & databases' },
-    { label: 'Shipped Projects', id: 'projects', icon: Code2, desc: 'Client work, AI apps & hackathons' },
-    { label: 'Career Progression', id: 'experience', icon: Briefcase, desc: 'Milestones & production roles' },
-    { label: 'Academic Qualifications', id: 'education', icon: GraduationCap, desc: 'MCA, BCA & degree credentials' },
-    { label: 'Honors & Certifications', id: 'achievements', icon: Trophy, desc: 'Hackathon win & certifications' },
-    { label: 'Get In Touch', id: 'contact', icon: Mail, desc: 'Direct message & booking inquiries' },
+    { label: 'Home', path: '/', id: 'home', icon: Home, desc: 'Intro & summary' },
+    { label: 'Technical Arsenal', path: '/stack', id: 'stack', icon: Layers, desc: 'Languages, frameworks & databases' },
+    { label: 'Shipped Projects', path: '/projects', id: 'projects', icon: Code2, desc: 'Client work, AI apps & hackathons' },
+    { label: 'Career Progression', path: '/experience', id: 'experience', icon: Briefcase, desc: 'Milestones & production roles' },
+    { label: 'Academic Qualifications', path: '/education', id: 'education', icon: GraduationCap, desc: 'MCA, BCA & degree credentials' },
+    { label: 'Honors & Certifications', path: '/awards', id: 'awards', icon: Trophy, desc: 'Hackathon win & certifications' },
+    { label: 'Client Reviews & Feedback', path: '/reviews', id: 'reviews', icon: MessageSquareQuote, desc: 'Client endorsements & testimonials' },
+    { label: 'Get In Touch', path: '/contact', id: 'contact', icon: Mail, desc: 'Direct message & booking inquiries' },
   ].filter(
     (s) =>
       s.label.toLowerCase().includes(query.toLowerCase()) ||
@@ -252,7 +247,7 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
                         <button
                           key={item.id}
                           type="button"
-                          onClick={() => handleScrollTo(item.id)}
+                          onClick={() => handleNavigateTo(item.path)}
                           className="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/[0.06] text-white/80 hover:text-white transition-colors cursor-pointer group text-left"
                         >
                           <div className="flex items-center gap-3">
