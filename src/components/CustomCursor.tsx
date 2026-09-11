@@ -90,20 +90,19 @@ const CustomCursor = () => {
                 }}
                 animate={{
                     opacity: isVisible ? 1 : 0,
-                    scale: isClicking ? 0.5 : isProjectHover ? 1.4 : 1,
+                    scale: isClicking ? 0.6 : 1,
                 }}
                 transition={{ duration: 0.08 }}
             >
                 <div
-                    className="w-[7px] h-[7px] rounded-full transition-colors duration-200"
+                    className="w-[5px] h-[5px] rounded-full transition-colors duration-200"
                     style={{
                         background: isProjectHover ? 'hsl(var(--secondary))' : 'hsl(var(--primary))',
-                        boxShadow: isProjectHover ? '0 0 12px hsl(var(--secondary))' : '0 0 8px hsl(var(--primary))',
                     }}
                 />
             </motion.div>
 
-            {/* Trailing Outer Ring with project hover highlight */}
+            {/* Trailing Outer Ring */}
             <motion.div
                 className="fixed top-0 left-0 pointer-events-none"
                 style={{
@@ -115,28 +114,23 @@ const CustomCursor = () => {
                 }}
                 animate={{
                     opacity: isVisible ? 1 : 0,
-                    scale: isClicking ? 0.8 : isProjectHover ? 2.3 : isHovering ? 1.7 : 1,
+                    scale: isClicking ? 0.8 : isProjectHover ? 1.5 : isHovering ? 1.3 : 1,
                 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+                transition={{ type: 'spring', stiffness: 320, damping: 26 }}
             >
                 <div
-                    className="w-[30px] h-[30px] rounded-full border transition-all duration-200"
+                    className="w-[28px] h-[28px] rounded-full border transition-all duration-200"
                     style={{
                         borderColor: isProjectHover
-                            ? 'hsl(var(--secondary))'
+                            ? 'hsl(var(--secondary) / 0.7)'
                             : isHovering
-                            ? 'hsl(var(--primary))'
-                            : 'rgba(255,255,255,0.35)',
+                            ? 'hsl(var(--primary) / 0.7)'
+                            : 'rgba(255,255,255,0.25)',
                         background: isProjectHover
-                            ? 'hsl(var(--secondary) / 0.14)'
+                            ? 'hsl(var(--secondary) / 0.05)'
                             : isHovering
-                            ? 'hsl(var(--primary) / 0.08)'
+                            ? 'hsl(var(--primary) / 0.05)'
                             : 'transparent',
-                        boxShadow: isProjectHover
-                            ? '0 0 24px hsl(var(--secondary) / 0.6), inset 0 0 10px hsl(var(--secondary) / 0.25)'
-                            : isHovering
-                            ? '0 0 15px hsl(var(--primary) / 0.35)'
-                            : 'none',
                     }}
                 />
             </motion.div>

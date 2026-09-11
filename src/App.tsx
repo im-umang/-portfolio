@@ -73,7 +73,11 @@ const LoadingScreen = ({ onDone }: { onDone: () => void }) => {
               boxShadow: '0 0 40px hsl(var(--primary)/0.2)',
             }}
           >
-            <span className="font-display font-black text-3xl text-gradient-blue">U</span>
+            <img
+              src="/ut-logo.png"
+              alt="Umang Trivedi UT Monogram"
+              className="w-12 h-12 object-contain filter contrast-125 drop-shadow-[0_2px_8px_rgba(0,189,255,0.4)]"
+            />
           </div>
 
           {/* Spinning ring */}

@@ -104,7 +104,7 @@ const ProjectDetail = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mb-4"
         >
-          <span className="text-amber-400 font-mono text-xs sm:text-sm font-semibold tracking-widest uppercase">
+          <span className="text-cyan-400 font-mono text-xs sm:text-sm font-semibold tracking-widest uppercase">
             PROJECT {project.number}
           </span>
         </motion.div>
@@ -234,7 +234,7 @@ const ProjectDetail = () => {
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-2">
             Overview
           </h2>
-          <div className="w-12 h-1 bg-amber-500/80 rounded-full mb-6" />
+          <div className="w-12 h-1 bg-cyan-500/80 rounded-full mb-6" />
           <p className="text-white/70 text-base sm:text-lg leading-relaxed max-w-3xl font-light">
             {project.overview}
           </p>
@@ -251,7 +251,7 @@ const ProjectDetail = () => {
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-2">
             The Problem
           </h2>
-          <div className="w-12 h-1 bg-amber-500/80 rounded-full mb-6" />
+          <div className="w-12 h-1 bg-cyan-500/80 rounded-full mb-6" />
           <p className="text-white/70 text-base sm:text-lg leading-relaxed max-w-3xl font-light">
             {project.problem}
           </p>
@@ -268,7 +268,7 @@ const ProjectDetail = () => {
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-2">
             The Approach
           </h2>
-          <div className="w-12 h-1 bg-amber-500/80 rounded-full mb-6" />
+          <div className="w-12 h-1 bg-cyan-500/80 rounded-full mb-6" />
           <p className="text-white/70 text-base sm:text-lg leading-relaxed max-w-3xl font-light">
             {project.approach}
           </p>
@@ -285,7 +285,7 @@ const ProjectDetail = () => {
           <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-2">
             Features
           </h2>
-          <div className="w-12 h-1 bg-amber-500/80 rounded-full mb-6" />
+          <div className="w-12 h-1 bg-cyan-500/80 rounded-full mb-6" />
 
           <div className="border-t border-white/10 divide-y divide-white/10 max-w-3xl">
             {project.features.map((feature, idx) => (
