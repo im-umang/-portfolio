@@ -76,7 +76,7 @@ npm run dev
 
 ## 🌐 Live Preview
 
-🔗 **[https://umang-trivedi.vercel.app/](https://umang-trivedi.vercel.app/)**
+🔗 **[https://umang-trivedi.vercel.app/](https://portfolio-eight-pi-42.vercel.app/)**
 
 ---
 
