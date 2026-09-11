@@ -34,9 +34,9 @@ const ProjectDetail = () => {
     switch (project.statusType) {
       case 'working':
         return (
-          <span className="inline-flex items-center gap-2 text-amber-400 font-medium text-sm">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-            Currently Working
+          <span className="inline-flex items-center gap-2 text-cyan-300 font-medium text-sm">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            Currently In Development
           </span>
         );
       case 'live':
@@ -293,7 +293,7 @@ const ProjectDetail = () => {
                 key={idx}
                 className="py-4 sm:py-5 flex items-center gap-6 group hover:bg-white/[0.02] px-3 -mx-3 rounded-lg transition-colors"
               >
-                <span className="font-mono text-amber-400/90 text-sm font-semibold tracking-wider flex-shrink-0">
+                <span className="font-mono text-cyan-400/90 text-sm font-semibold tracking-wider flex-shrink-0">
                   {String(idx + 1).padStart(2, '0')}
                 </span>
                 <span className="text-white/80 group-hover:text-white text-base sm:text-lg font-medium transition-colors">
