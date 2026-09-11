@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Quote, 
   Star, 
@@ -8,8 +9,13 @@ import {
   ExternalLink, 
   Trophy, 
   Briefcase, 
-  GraduationCap
+  GraduationCap,
+  X,
+  Send,
+  User,
+  Plus
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { sound } from '@/lib/sound';
 
 export interface Testimonial {
@@ -27,9 +33,10 @@ export interface Testimonial {
   avatarGradient: string;
   verified: boolean;
   link?: string;
+  isLiveSubmission?: boolean;
 }
 
-const TESTIMONIALS: Testimonial[] = [
+const DEFAULT_TESTIMONIALS: Testimonial[] = [
   {
     id: 'radhika-valand',
     name: 'Radhika Valand',
@@ -97,26 +104,44 @@ const TESTIMONIALS: Testimonial[] = [
   },
 ];
 
-const doubled = [...TESTIMONIALS, ...TESTIMONIALS, ...TESTIMONIALS];
-const reversed = [...TESTIMONIALS].reverse();
-const revDbl = [...reversed, ...reversed, ...reversed];
+const STORAGE_KEY = 'umang_portfolio_live_reviews_v1';
+
+const AVATAR_GRADIENTS = [
+  'from-cyan-500 to-blue-600',
+  'from-pink-500 to-purple-600',
+  'from-emerald-400 to-cyan-500',
+  'from-amber-400 to-orange-500',
+  'from-violet-500 to-fuchsia-600',
+];
 
 /* ── Single Marquee Review Card ── */
 const TestimonialCard = ({ item }: { item: Testimonial }) => {
-  const CatIcon = item.categoryIcon;
+  const CatIcon = item.categoryIcon || Sparkles;
 
   return (
     <div
       onClick={() => sound.playClick()}
-      className="flex-shrink-0 w-[340px] sm:w-[390px] mx-3 rounded-2xl bg-[#09101f]/85 hover:bg-[#0c162b] border border-white/[0.08] hover:border-cyan-400/40 p-5 sm:p-6 transition-all duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.35)] hover:shadow-[0_12px_36px_rgba(0,189,255,0.12)] flex flex-col justify-between select-none group cursor-pointer"
+      className={`flex-shrink-0 w-[340px] sm:w-[390px] mx-3 rounded-2xl p-5 sm:p-6 transition-all duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.35)] hover:shadow-[0_12px_36px_rgba(0,189,255,0.15)] flex flex-col justify-between select-none group cursor-pointer ${
+        item.isLiveSubmission
+          ? 'bg-[#0a162a]/90 hover:bg-[#0d1d36] border border-cyan-400/40 hover:border-cyan-300 ring-1 ring-cyan-400/20'
+          : 'bg-[#09101f]/85 hover:bg-[#0c162b] border border-white/[0.08] hover:border-cyan-400/40'
+      }`}
     >
       <div>
-        {/* Top: Category Tag + 5 Stars */}
+        {/* Top: Category Tag + Live Badge + 5 Stars */}
         <div className="flex items-center justify-between gap-2 mb-3">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-400/25">
-            <CatIcon className="w-3 h-3 text-cyan-400" />
-            {item.categoryLabel}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-400/25">
+              <CatIcon className="w-3 h-3 text-cyan-400" />
+              {item.categoryLabel}
+            </span>
+            {item.isLiveSubmission && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono text-emerald-300 bg-emerald-500/15 border border-emerald-400/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Live
+              </span>
+            )}
+          </div>
 
           <div className="flex items-center gap-0.5">
             {[...Array(item.rating)].map((_, i) => (
@@ -148,7 +173,7 @@ const TestimonialCard = ({ item }: { item: Testimonial }) => {
               {item.verified && (
                 <CheckCircle2
                   className="w-3.5 h-3.5 text-cyan-400 shrink-0"
-                  title="Verified Collaboration"
+                  title="Verified Endorsement"
                 />
               )}
             </div>
@@ -180,6 +205,142 @@ const TestimonialCard = ({ item }: { item: Testimonial }) => {
 };
 
 export default function Testimonials() {
+  const [reviews, setReviews] = useState<Testimonial[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const rehydrated = parsed.map((item: Partial<Testimonial>) => ({
+              ...item,
+              categoryIcon: item.categoryLabel === 'Client Project' ? Sparkles : item.categoryLabel === 'Hackathon' ? Trophy : Briefcase,
+            })) as Testimonial[];
+            return [...rehydrated, ...DEFAULT_TESTIMONIALS];
+          }
+        }
+      } catch {
+        // ignore
+      }
+    }
+    return DEFAULT_TESTIMONIALS;
+  });
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hoverRating, setHoverRating] = useState<number | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    role: '',
+    organization: '',
+    category: 'Client Project',
+    rating: 5,
+    quote: '',
+    link: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsModalOpen(false);
+    };
+    if (isModalOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen]);
+
+  // Handle Review Submission
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.name.trim()) {
+      toast.error('Please enter your name.');
+      return;
+    }
+    if (!formData.role.trim() || !formData.organization.trim()) {
+      toast.error('Please specify your role and company/organization.');
+      return;
+    }
+    if (!formData.quote.trim() || formData.quote.length < 10) {
+      toast.error('Please write a review of at least 10 characters.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    sound.playClick();
+
+    // Simulate instant broadcast
+    await new Promise((resolve) => setTimeout(resolve, 600));
+
+    // Generate initials
+    const parts = formData.name.trim().split(' ');
+    const initials = parts.length > 1
+      ? `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
+      : formData.name.slice(0, 2).toUpperCase();
+
+    const randomGradient = AVATAR_GRADIENTS[Math.floor(Math.random() * AVATAR_GRADIENTS.length)];
+
+    const newReview: Testimonial = {
+      id: `user-review-${Date.now()}`,
+      name: formData.name.trim(),
+      role: formData.role.trim(),
+      organization: formData.organization.trim(),
+      categoryLabel: formData.category,
+      categoryIcon: formData.category === 'Client Project' ? Sparkles : formData.category === 'Hackathon' ? Trophy : Briefcase,
+      badge: 'Live Verified Review',
+      rating: formData.rating,
+      quote: formData.quote.trim(),
+      projectContext: 'Direct Community Endorsement',
+      avatarInitials: initials,
+      avatarGradient: randomGradient,
+      verified: true,
+      link: formData.link.trim() ? (formData.link.startsWith('http') ? formData.link : `https://${formData.link}`) : undefined,
+      isLiveSubmission: true,
+    };
+
+    // Update state & localStorage
+    const updatedReviews = [newReview, ...reviews];
+    setReviews(updatedReviews);
+
+    try {
+      const liveOnly = updatedReviews.filter((r) => r.isLiveSubmission);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(liveOnly));
+    } catch {
+      // ignore
+    }
+
+    setIsSubmitting(false);
+    setIsModalOpen(false);
+    sound.playChime();
+    toast.success(`Thank you, ${formData.name}! Your review is now live on the portfolio stream.`);
+
+    // Reset form
+    setFormData({
+      name: '',
+      role: '',
+      organization: '',
+      category: 'Client Project',
+      rating: 5,
+      quote: '',
+      link: '',
+    });
+  };
+
+  const doubled = [...reviews, ...reviews, ...reviews];
+  const reversed = [...reviews].reverse();
+  const revDbl = [...reversed, ...reversed, ...reversed];
+
+  const currentDisplayRating = hoverRating !== null ? hoverRating : formData.rating;
+
+  const RATING_DESCRIPTIONS: Record<number, string> = {
+    5: '⭐⭐⭐⭐⭐ 5.0 — Outstanding / Exceptional Work',
+    4: '⭐⭐⭐⭐ 4.0 — Very Good / Highly Recommended',
+    3: '⭐⭐⭐ 3.0 — Good Collaboration',
+    2: '⭐⭐ 2.0 — Fair',
+    1: '⭐ 1.0 — Needs Improvement',
+  };
+
   return (
     <section id="testimonials" className="pt-20 sm:pt-24 pb-16 sm:pb-20 overflow-hidden relative">
       {/* Ambient background glow */}
@@ -203,9 +364,25 @@ export default function Testimonials() {
             Client & Peer <span className="text-gradient">Feedback</span>
           </h2>
 
-          <p className="text-white/55 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed">
-            Real feedback from client commissions, hackathon partners, and mentors on technical execution and delivery.
+          <p className="text-white/55 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed mb-6">
+            Real feedback from client commissions, hackathon partners, and mentors. Have we worked together? Leave a review live!
           </p>
+
+          {/* Leave a Review Action Button */}
+          <motion.button
+            type="button"
+            onClick={() => {
+              sound.playPop();
+              setIsModalOpen(true);
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-400 border border-cyan-400/40 shadow-[0_0_22px_rgba(0,189,255,0.35)] transition-all cursor-pointer group"
+          >
+            <Star className="w-4 h-4 fill-amber-300 text-amber-300 group-hover:rotate-12 transition-transform" />
+            <span>Leave a Review (5★ Rating)</span>
+            <Sparkles className="w-3.5 h-3.5 text-cyan-200" />
+          </motion.button>
         </motion.div>
       </div>
 
@@ -229,6 +406,207 @@ export default function Testimonials() {
           ))}
         </div>
       </div>
+
+      {/* ═══ Interactive Live Review Modal ═══ */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/80 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="relative w-full max-w-lg bg-[#070d1a] border border-cyan-500/35 rounded-3xl p-6 sm:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.85)] my-8 overflow-hidden"
+            >
+              {/* Top ambient glow */}
+              <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none" />
+
+              {/* Modal Header */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-cyan-500/15 border border-cyan-400/30 flex items-center justify-center text-cyan-300">
+                    <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                      Leave a Live Review
+                    </h3>
+                    <p className="text-[11px] font-mono text-white/40">
+                      Your endorsement will appear immediately in the stream
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    sound.playClick();
+                    setIsModalOpen(false);
+                  }}
+                  className="p-2 rounded-xl text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSubmitReview} className="space-y-4">
+                {/* 5-Star Interactive Rating Picker */}
+                <div>
+                  <label className="block text-xs font-mono font-medium text-white/70 mb-2">
+                    Your Rating <span className="text-cyan-400">*</span>
+                  </label>
+                  <div className="flex items-center gap-1.5 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(null)}
+                        onClick={() => {
+                          sound.playClick();
+                          setFormData({ ...formData, rating: star });
+                        }}
+                        className="p-1 text-2xl transition-transform hover:scale-125 focus:outline-none cursor-pointer"
+                      >
+                        <Star
+                          className={`w-7 h-7 transition-colors ${
+                            star <= currentDisplayRating
+                              ? 'fill-amber-400 text-amber-400 filter drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]'
+                              : 'text-white/20'
+                          }`}
+                        />
+                      </button>
+                    ))}
+                    <span className="ml-auto text-[11px] font-mono text-cyan-300 hidden sm:inline">
+                      {RATING_DESCRIPTIONS[currentDisplayRating]}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Name & Role Row */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-mono font-medium text-white/70 mb-1.5">
+                      Your Name <span className="text-cyan-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="e.g. Sarah Jenkins"
+                      required
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-cyan-400 text-white text-xs sm:text-sm outline-none transition-all placeholder:text-white/25"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono font-medium text-white/70 mb-1.5">
+                      Role & Company <span className="text-cyan-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.role}
+                      onChange={(e) => setFormData({ ...formData, role: e.target.value, organization: e.target.value })}
+                      placeholder="e.g. Lead Designer @ Acme"
+                      required
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-cyan-400 text-white text-xs sm:text-sm outline-none transition-all placeholder:text-white/25"
+                    />
+                  </div>
+                </div>
+
+                {/* Relationship Tag Chips */}
+                <div>
+                  <label className="block text-xs font-mono font-medium text-white/70 mb-1.5">
+                    Collaboration Type
+                  </label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {['Client Project', 'Hackathon Teammate', 'Internship Lead', 'Peer Review'].map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => {
+                          sound.playClick();
+                          setFormData({ ...formData, category: cat });
+                        }}
+                        className={`px-3 py-1 rounded-full text-xs font-mono transition-all cursor-pointer ${
+                          formData.category === cat
+                            ? 'bg-cyan-500/20 border border-cyan-400 text-cyan-300 shadow-[0_0_10px_rgba(0,189,255,0.25)]'
+                            : 'bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] text-white/50 hover:text-white'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Review Text */}
+                <div>
+                  <label className="block text-xs font-mono font-medium text-white/70 mb-1.5">
+                    Your Testimonial / Feedback <span className="text-cyan-400">*</span>
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={formData.quote}
+                    onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
+                    placeholder="Share your experience working with Umang on web architecture, speed, design quality, or communication..."
+                    required
+                    className="w-full p-3.5 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-cyan-400 text-white text-xs sm:text-sm outline-none transition-all placeholder:text-white/25 resize-none"
+                  />
+                </div>
+
+                {/* Optional Website Link */}
+                <div>
+                  <label className="block text-xs font-mono font-medium text-white/70 mb-1.5">
+                    Project / Website URL <span className="text-white/30 text-[10px]">(Optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.link}
+                    onChange={(e) => setFormData({ ...formData, link: e.target.value })}
+                    placeholder="https://yourcompany.com"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-cyan-400 text-white text-xs sm:text-sm outline-none transition-all placeholder:text-white/25"
+                  />
+                </div>
+
+                {/* Submit Action */}
+                <div className="pt-2 flex items-center justify-end gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      sound.playClick();
+                      setIsModalOpen(false);
+                    }}
+                    className="px-4 py-2.5 rounded-xl text-xs font-mono text-white/60 hover:text-white hover:bg-white/[0.05] transition-colors cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-400 disabled:opacity-50 transition-all shadow-[0_0_20px_rgba(0,189,255,0.35)] cursor-pointer flex items-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                        <span>Publishing Live...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Publish Review Live ✦</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
