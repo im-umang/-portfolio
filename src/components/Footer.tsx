@@ -166,14 +166,9 @@ const Footer = ({ onSelectSection }: FooterProps) => {
               AHMEDABAD, GUJARAT, INDIA • FULL-STACK & WEB OPERATIONS
             </div>
 
-            <button
-              type="button"
-              onClick={scrollToTop}
-              className="hover:text-secondary transition-colors flex items-center gap-1.5 cursor-pointer bg-transparent border-none p-0 group"
-            >
-              <span>Back to top</span>
-              <ArrowUp className="w-3.5 h-3.5 text-secondary group-hover:-translate-y-1 transition-transform duration-200" />
-            </button>
+            <div className="text-center sm:text-right text-[11px] text-white/30">
+              DESIGNED & ENGINEERED FOR SCALABLE WEB
+            </div>
           </motion.div>
         </motion.div>
       </div>

@@ -8,9 +8,10 @@ import {
   ExternalLink,
   Copy,
   ArrowRight,
-  FileText,
   RotateCcw,
   Check,
+  ArrowUp,
+  Command,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -60,6 +61,21 @@ export default function UmangAIAssistant() {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, isTyping, isOpen]);
+
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    sound.playPop();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Open with custom event if requested
   useEffect(() => {
@@ -228,17 +244,53 @@ export default function UmangAIAssistant() {
 
   return (
     <>
-      {/* Floating Agent Launcher Button */}
-      <div className="fixed bottom-6 right-6 z-[9998] flex items-center">
+      {/* Unified Single Floating Island (Clean & Non-overlapping) */}
+      <div className="fixed bottom-6 right-4 sm:right-6 z-[9998] flex items-center gap-2">
+        {/* Scroll To Top Button (reveals on scroll) */}
+        <AnimatePresence>
+          {showScrollTop && (
+            <motion.button
+              type="button"
+              initial={{ opacity: 0, scale: 0.8, x: 10 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.8, x: 10 }}
+              onClick={scrollToTop}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.92 }}
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-[#0a1222]/90 hover:bg-[#0e1a32] border border-white/15 hover:border-cyan-400 text-white/70 hover:text-cyan-300 shadow-[0_8px_24px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all cursor-pointer"
+              title="Back to top"
+              aria-label="Back to top"
+            >
+              <ArrowUp className="w-4 h-4" />
+            </motion.button>
+          )}
+        </AnimatePresence>
+
+        {/* Command Palette Trigger */}
+        <button
+          type="button"
+          onClick={() => {
+            sound.playClick();
+            window.dispatchEvent(new CustomEvent('toggle-command-palette'));
+          }}
+          className="hidden sm:flex items-center gap-1.5 px-3 py-2.5 rounded-full bg-[#0a1222]/90 hover:bg-[#0e1a32] border border-white/15 hover:border-cyan-400/40 text-white/70 hover:text-cyan-300 shadow-[0_8px_24px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all cursor-pointer text-xs font-mono"
+          title="Open search palette (Ctrl+K)"
+          aria-label="Open Command Palette"
+        >
+          <Command className="w-3.5 h-3.5 text-cyan-400" />
+          <span>Ctrl+K</span>
+        </button>
+
+        {/* Ask Umang AI Main Trigger */}
         <motion.button
           type="button"
           onClick={() => {
             sound.playPop();
             setIsOpen((p) => !p);
           }}
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.94 }}
-          className="relative flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#0a1222]/90 hover:bg-[#0c1830] border border-cyan-400/40 hover:border-cyan-400 text-white shadow-[0_8px_30px_rgba(0,189,255,0.3)] backdrop-blur-xl transition-all cursor-pointer group"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="relative flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#0a1222]/90 hover:bg-[#0e1a32] border border-cyan-400/40 hover:border-cyan-400 text-white shadow-[0_8px_30px_rgba(0,189,255,0.3)] backdrop-blur-xl transition-all cursor-pointer group"
           aria-label="Ask Umang AI"
         >
           {/* Pulsing Emerald Live Dot */}

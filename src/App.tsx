@@ -8,7 +8,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
 import SmoothScroll from "@/components/SmoothScroll";
 import CommandPalette from "@/components/CommandPalette";
-import FloatingDock from "@/components/FloatingDock";
 import UmangAIAssistant from "@/components/UmangAIAssistant";
 
 const Index          = lazy(() => import("./pages/Index"));
@@ -167,7 +166,6 @@ const App = () => {
             <Sonner />
             <BrowserRouter>
               <CommandPalette isOpen={commandOpen} onClose={() => setCommandOpen(false)} />
-              <FloatingDock onOpenCommandPalette={() => setCommandOpen(true)} />
               <UmangAIAssistant />
 
               <Suspense fallback={null}>
