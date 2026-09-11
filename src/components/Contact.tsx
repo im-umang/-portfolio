@@ -17,15 +17,65 @@ import { FaWhatsapp } from 'react-icons/fa';
 import { toast } from 'sonner';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: 'Full-time Opportunity',
-    message: '',
+  const DRAFT_KEY = 'umang_contact_draft';
+  const [formData, setFormData] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem(DRAFT_KEY);
+        if (saved) return JSON.parse(saved);
+      } catch {
+        // ignore
+      }
+    }
+    return {
+      name: '',
+      email: '',
+      subject: 'Full-time Opportunity',
+      message: '',
+    };
   });
 
+  const [hasRestoredDraft, setHasRestoredDraft] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  // Check if draft was restored on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(DRAFT_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.name || parsed.email || parsed.message) {
+          setHasRestoredDraft(true);
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  // Auto-save draft on form change
+  const handleInputChange = (field: string, value: string) => {
+    const updated = { ...formData, [field]: value };
+    setFormData(updated);
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(updated));
+    } catch {
+      // ignore
+    }
+  };
+
+  const handleClearDraft = () => {
+    localStorage.removeItem(DRAFT_KEY);
+    setFormData({
+      name: '',
+      email: '',
+      subject: 'Full-time Opportunity',
+      message: '',
+    });
+    setHasRestoredDraft(false);
+    toast.success('Draft cleared');
+  };
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText('utrivedi80@gmail.com');
@@ -57,6 +107,8 @@ const Contact = () => {
 
     setIsSubmitting(false);
     toast.success(`Thank you, ${formData.name}! Your message has been sent. Umang will reply shortly.`);
+    localStorage.removeItem(DRAFT_KEY);
+    setHasRestoredDraft(false);
     setFormData({
       name: '',
       email: '',
@@ -204,43 +256,55 @@ const Contact = () => {
                 <MessageSquare className="w-5 h-5 text-secondary" />
                 Send a Direct Message
               </h3>
-              <p className="text-xs sm:text-sm text-white/50 mb-8">
-                Fill out the form below and it will reach my inbox directly.
-              </p>
+              {hasRestoredDraft && (
+                <div className="flex items-center justify-between px-3 py-2 mb-6 rounded-xl bg-cyan-500/10 border border-cyan-400/25 text-xs text-cyan-300">
+                  <span className="flex items-center gap-1.5 font-mono text-[11px]">
+                    <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                    Auto-saved draft restored
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleClearDraft}
+                    className="text-white/50 hover:text-white underline text-[11px] cursor-pointer"
+                  >
+                    Clear draft
+                  </button>
+                </div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Name & Email row */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-mono font-medium text-white/70 mb-2">
-                      Your Name <span className="text-primary">*</span>
+                      Your Name <span className="text-cyan-400">*</span>
                     </label>
                     <div className="relative">
                       <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                       <input
                         type="text"
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
                         placeholder="Umang Trivedi"
                         required
-                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-primary focus:bg-white/[0.07] text-white text-xs sm:text-sm outline-none transition-all placeholder:text-white/20"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-cyan-400 focus:bg-white/[0.07] text-white text-xs sm:text-sm outline-none transition-all placeholder:text-white/20"
                       />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-mono font-medium text-white/70 mb-2">
-                      Your Email <span className="text-primary">*</span>
+                      Your Email <span className="text-cyan-400">*</span>
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                       <input
                         type="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
                         placeholder="you@company.com"
                         required
-                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-primary focus:bg-white/[0.07] text-white text-xs sm:text-sm outline-none transition-all placeholder:text-white/20"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-cyan-400 focus:bg-white/[0.07] text-white text-xs sm:text-sm outline-none transition-all placeholder:text-white/20"
                       />
                     </div>
                   </div>
@@ -255,8 +319,8 @@ const Contact = () => {
                     <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                     <select
                       value={formData.subject}
-                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-surface border border-white/[0.1] focus:border-primary text-white text-xs sm:text-sm outline-none transition-all cursor-pointer"
+                      onChange={(e) => handleInputChange('subject', e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-surface border border-white/[0.1] focus:border-cyan-400 text-white text-xs sm:text-sm outline-none transition-all cursor-pointer"
                     >
                       <option value="Full-time Opportunity">Full-time Software Engineering Role</option>
                       <option value="Freelance Project">Freelance / Contract Development</option>
@@ -269,15 +333,15 @@ const Contact = () => {
                 {/* Message Textarea */}
                 <div>
                   <label className="block text-xs font-mono font-medium text-white/70 mb-2">
-                    Your Message <span className="text-primary">*</span>
+                    Your Message <span className="text-cyan-400">*</span>
                   </label>
                   <textarea
                     rows={4}
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(e) => handleInputChange('message', e.target.value)}
                     placeholder="Tell me about the role, project, tech stack requirements, or questions..."
                     required
-                    className="w-full p-4 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-primary focus:bg-white/[0.07] text-white text-xs sm:text-sm outline-none transition-all placeholder:text-white/20 resize-none"
+                    className="w-full p-4 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-cyan-400 focus:bg-white/[0.07] text-white text-xs sm:text-sm outline-none transition-all placeholder:text-white/20 resize-none"
                   />
                 </div>
 

@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Search, Volume2, VolumeX, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
+import { sound } from '@/lib/sound';
+import { toast } from 'sonner';
 
 const NAV_LINKS = [
   { label: 'Home',       href: '#home',        id: 'home'        },
@@ -39,9 +41,32 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
   const [hidden,            setHidden]            = useState(false);
   const [menuOpen,          setMenuOpen]          = useState(false);
   const [scrollActiveSection, setScrollActiveSection] = useState('home');
+  const [timeString,        setTimeString]        = useState('');
+  const [soundActive,       setSoundActive]       = useState(sound.isEnabled());
   const lastScrollY = useRef(0);
 
   const currentActive = activeSectionProp || scrollActiveSection;
+
+  /* ── Real-Time IST Clock (Ahmedabad, India) ── */
+  useEffect(() => {
+    const updateTime = () => {
+      try {
+        const now = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'Asia/Kolkata',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        }).format(new Date());
+        setTimeString(now);
+      } catch {
+        setTimeString('IST');
+      }
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   /* ── Smart hide/show on scroll direction ── */
   useEffect(() => {
@@ -92,6 +117,7 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
   /* ── Navigation click handler ── */
   const handleItemClick = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
+    sound.playClick();
     setMenuOpen(false);
     if (onSelectSection) {
       onSelectSection(id);
@@ -102,6 +128,12 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
         window.scrollTo({ top, behavior: 'smooth' });
       }
     }
+  };
+
+  const handleSoundToggle = () => {
+    const next = sound.toggle();
+    setSoundActive(next);
+    toast.success(next ? 'Sound effects enabled' : 'Sound effects muted');
   };
 
   return (
@@ -166,7 +198,17 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
               </div>
             </button>
 
-            {/* Desktop Links */}
+            {/* Live IST Time & Location Pill (Ahmedabad, India) */}
+            {timeString && (
+              <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.02] border border-white/[0.06] text-[11px] font-mono text-white/50">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Ahmedabad, IN</span>
+                <span className="text-white/20">•</span>
+                <span className="text-cyan-300 font-medium">{timeString} IST</span>
+              </div>
+            )}
+
+            {/* Desktop Links & Action Suite */}
             <nav className="hidden md:flex items-center" aria-label="Main navigation">
               <ul className="flex items-center gap-0.5">
                 {NAV_LINKS.map(link => {
@@ -176,7 +218,7 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
                       <a
                         href={link.href}
                         onClick={e => handleItemClick(e, link.id)}
-                        className="relative px-3.5 lg:px-4 py-2 flex items-center group cursor-pointer"
+                        className="relative px-3 lg:px-3.5 py-2 flex items-center group cursor-pointer"
                         aria-current={active ? 'page' : undefined}
                       >
                         {active && (
@@ -198,12 +240,45 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
                 })}
               </ul>
 
+              {/* Command Palette Trigger */}
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playClick();
+                  window.dispatchEvent(new CustomEvent('toggle-command-palette'));
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono text-white/55 hover:text-white bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] hover:border-cyan-400/30 transition-all ml-2 cursor-pointer"
+                aria-label="Search portfolio (Ctrl+K)"
+              >
+                <Search className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="hidden lg:inline text-[11px]">Search</span>
+                <kbd className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.06] text-white/40 border border-white/5">
+                  Ctrl+K
+                </kbd>
+              </button>
+
+              {/* Sound Effects Toggle */}
+              <button
+                type="button"
+                onClick={handleSoundToggle}
+                className="p-2 rounded-full text-white/50 hover:text-white hover:bg-white/[0.06] transition-colors ml-1 cursor-pointer"
+                title={soundActive ? 'Mute sound effects' : 'Enable sound effects'}
+                aria-label="Toggle UI sound effects"
+              >
+                {soundActive ? (
+                  <Volume2 className="w-4 h-4 text-cyan-400" />
+                ) : (
+                  <VolumeX className="w-4 h-4 text-white/35" />
+                )}
+              </button>
+
+              {/* Hire Me CTA */}
               <motion.button
                 type="button"
                 onClick={e => handleItemClick(e, 'contact')}
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
-                className="ml-4 px-5 py-2 rounded-full text-xs lg:text-sm font-bold text-white cursor-pointer"
+                className="ml-3 px-4 sm:px-5 py-2 rounded-full text-xs lg:text-sm font-bold text-white cursor-pointer"
                 style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 22px hsl(var(--primary)/0.55)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
@@ -212,14 +287,27 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
               </motion.button>
             </nav>
 
-            {/* Mobile Toggle */}
-            <motion.button
-              onClick={() => setMenuOpen(p => !p)}
-              whileTap={{ scale: 0.88 }}
-              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={menuOpen}
-              className="md:hidden p-2.5 rounded-xl glass-strong text-white/70 hover:text-white border border-white/[0.08]"
-            >
+            {/* Mobile Actions: Search + Menu Toggle */}
+            <div className="flex items-center gap-2 md:hidden">
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playClick();
+                  window.dispatchEvent(new CustomEvent('toggle-command-palette'));
+                }}
+                className="p-2.5 rounded-xl glass-strong text-white/70 hover:text-white border border-white/[0.08]"
+                aria-label="Search portfolio"
+              >
+                <Search className="w-4 h-4 text-cyan-400" />
+              </button>
+
+              <motion.button
+                onClick={() => setMenuOpen(p => !p)}
+                whileTap={{ scale: 0.88 }}
+                aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={menuOpen}
+                className="p-2.5 rounded-xl glass-strong text-white/70 hover:text-white border border-white/[0.08]"
+              >
               <AnimatePresence mode="wait" initial={false}>
                 {menuOpen
                   ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.13 }}><X size={18} /></motion.span>
@@ -227,6 +315,7 @@ const Navbar = ({ activeSection: activeSectionProp, onSelectSection }: NavbarPro
                 }
               </AnimatePresence>
             </motion.button>
+          </div>
 
           </div>
         </div>

@@ -7,6 +7,8 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
 import SmoothScroll from "@/components/SmoothScroll";
+import CommandPalette from "@/components/CommandPalette";
+import FloatingDock from "@/components/FloatingDock";
 
 const Index          = lazy(() => import("./pages/Index"));
 const ProjectsPage   = lazy(() => import("./pages/ProjectsPage"));
@@ -143,6 +145,13 @@ const LoadingScreen = ({ onDone }: { onDone: () => void }) => {
 
 const App = () => {
   const [loaded, setLoaded] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
+
+  useEffect(() => {
+    const handleToggle = () => setCommandOpen((prev) => !prev);
+    window.addEventListener('toggle-command-palette', handleToggle);
+    return () => window.removeEventListener('toggle-command-palette', handleToggle);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -156,6 +165,9 @@ const App = () => {
             <Toaster />
             <Sonner />
             <BrowserRouter>
+              <CommandPalette isOpen={commandOpen} onClose={() => setCommandOpen(false)} />
+              <FloatingDock onOpenCommandPalette={() => setCommandOpen(true)} />
+
               <Suspense fallback={null}>
                 <Routes>
                   <Route path="/"                       element={<Index />} />
