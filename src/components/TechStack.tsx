@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { FaReact, FaNodeJs, FaFigma, FaGitAlt, FaPython, FaGithub } from 'react-icons/fa';
 import { SiNextdotjs, SiTypescript, SiTailwindcss, SiPostgresql, SiMongodb, SiExpress, SiMysql, SiVercel } from 'react-icons/si';
-import { Layers } from 'lucide-react';
+import { Layers, Code2, Server, Database, Wrench } from 'lucide-react';
 import { sound } from '@/lib/sound';
 
 interface Tech {
@@ -31,11 +31,15 @@ const technologies: Tech[] = [
   { name: 'Vercel',    icon: <SiVercel />,     color: '#ffffff', tag: 'Edge Deployment',  url: 'https://vercel.com',             category: 'tools'     },
 ];
 
-const CATS = ['all', 'frontend', 'backend', 'database', 'tools'] as const;
-type Cat = typeof CATS[number];
-const CAT_LABELS: Record<Cat, string> = {
-  all: 'All', frontend: 'Frontend', backend: 'Backend', database: 'Database', tools: 'Dev Tools',
-};
+type Cat = 'all' | 'frontend' | 'backend' | 'database' | 'tools';
+
+const CAT_CONFIG: { id: Cat; label: string; icon: React.ElementType }[] = [
+  { id: 'all',      label: 'All Arsenal', icon: Layers },
+  { id: 'frontend', label: 'Frontend',    icon: Code2 },
+  { id: 'backend',  label: 'Backend',     icon: Server },
+  { id: 'database', label: 'Database',    icon: Database },
+  { id: 'tools',    label: 'Dev Tools',   icon: Wrench },
+];
 
 const doubled  = [...technologies, ...technologies];
 const reversed = [...technologies].reverse();
@@ -137,30 +141,31 @@ const TechStack = () => {
             The modern tools, frameworks, and datastores I rely on to build resilient systems.
           </p>
 
-          {/* Category filter */}
-          <div className="flex flex-wrap justify-center gap-2">
-            {CATS.map(cat => (
-              <motion.button
-                key={cat}
-                onClick={() => {
-                  sound.playClick();
-                  setActiveCategory(cat);
-                }}
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.94 }}
-                className="px-4 py-2 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-300"
-                style={{
-                  background: activeCategory === cat
-                    ? 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))'
-                    : 'rgba(255,255,255,0.04)',
-                  color: activeCategory === cat ? '#fff' : 'rgba(255,255,255,0.45)',
-                  border: `1px solid ${activeCategory === cat ? 'transparent' : 'rgba(255,255,255,0.09)'}`,
-                  boxShadow: activeCategory === cat ? '0 0 20px hsl(var(--primary)/0.4)' : 'none',
-                }}
-              >
-                {CAT_LABELS[cat]}
-              </motion.button>
-            ))}
+          {/* Category filter - Unified with Projects tabs */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mb-8">
+            {CAT_CONFIG.map((cat) => {
+              const Icon = cat.icon;
+              const isActive = activeCategory === cat.id;
+
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => {
+                    sound.playClick();
+                    setActiveCategory(cat.id);
+                  }}
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full font-mono text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer ${
+                    isActive
+                      ? 'text-white border border-cyan-400/40 bg-cyan-500/15 shadow-[0_0_12px_rgba(0,189,255,0.25)]'
+                      : 'text-white/50 hover:text-white border border-white/[0.07] hover:border-white/15 bg-white/[0.02] hover:bg-white/[0.05]'
+                  }`}
+                >
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-cyan-400' : 'text-white/40'}`} />
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
           </div>
         </motion.div>
       </div>
