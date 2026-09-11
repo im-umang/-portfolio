@@ -140,6 +140,17 @@ export default function UmangAIAssistant() {
       };
     }
 
+    // Client Feedback & Endorsements
+    if (q.includes('review') || q.includes('testimonial') || q.includes('feedback') || q.includes('client say') || q.includes('endorse') || q.includes('recommend')) {
+      return {
+        text: "Umang holds **verified 5-star endorsements** across client delivery, hackathons, and engineering internships:\n\n• **Radhika Valand** (Founder, Radhika Studio): *\"Umang turned my vision into an elegant, high-performance portfolio website... delivered ahead of schedule with 100% satisfaction.\"*\n• **Devendra Sharma** (Odoo Hackathon '26 Teammate): *\"Spearheaded the real-time sensor state engine for GearGuard, helping us clinch 1st place.\"*\n• **Rahul Mehta** (Engineering Lead, OctaNet): *\"Demonstrated strong engineering hygiene, clean React components, and algorithmic discipline.\"*",
+        actions: [
+          { label: '⭐ View All Endorsements', actionType: 'navigate', payload: '#testimonials' },
+          { label: 'Client Project Demo', actionType: 'link', payload: 'https://valandradhika.com' },
+        ],
+      };
+    }
+
     // Hackathon win / GearGuard
     if (q.includes('hackathon') || q.includes('gearguard') || q.includes('odoo') || q.includes('adani') || q.includes('award') || q.includes('win')) {
       return {

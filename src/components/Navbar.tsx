@@ -6,13 +6,14 @@ import { sound } from '@/lib/sound';
 import { toast } from 'sonner';
 
 const NAV_LINKS = [
-  { label: 'Home',       href: '#home',        id: 'home'        },
+  { label: 'Home',       href: '#home',         id: 'home'        },
   { label: 'Stack',      href: '#stack',        id: 'stack'       },
   { label: 'Projects',   href: '#projects',     id: 'projects'    },
   { label: 'Experience', href: '#experience',   id: 'experience'  },
   { label: 'Education',  href: '#education',    id: 'education'   },
   { label: 'Awards',     href: '#achievements', id: 'achievements'},
-  { label: 'Contact',    href: '#contact',     id: 'contact'     },
+  { label: 'Reviews',    href: '#testimonials', id: 'testimonials'},
+  { label: 'Contact',    href: '#contact',      id: 'contact'     },
 ];
 
 const mobileVariants: Variants = {

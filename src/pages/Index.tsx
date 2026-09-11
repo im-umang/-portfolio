@@ -10,12 +10,13 @@ import Projects       from '@/components/Projects';
 import Experience     from '@/components/Experience';
 import Education      from '@/components/Education';
 import Achievements   from '@/components/Achievements';
+import Testimonials   from '@/components/Testimonials';
 import Contact        from '@/components/Contact';
 import Footer         from '@/components/Footer';
 
-export type SectionView = 'all' | 'stack' | 'projects' | 'experience' | 'education' | 'achievements' | 'contact';
+export type SectionView = 'all' | 'stack' | 'projects' | 'experience' | 'education' | 'achievements' | 'testimonials' | 'contact';
 
-const VALID_VIEWS: SectionView[] = ['stack', 'projects', 'experience', 'education', 'achievements', 'contact'];
+const VALID_VIEWS: SectionView[] = ['stack', 'projects', 'experience', 'education', 'achievements', 'testimonials', 'contact'];
 
 const Index = () => {
   const getInitialView = (): SectionView => {
@@ -125,7 +126,12 @@ const Index = () => {
 
               <div className="section-divider" aria-hidden="true" />
 
-              {/* 7 · Contact & Messaging Form */}
+              {/* 7 · Client & Peer Testimonials */}
+              <Testimonials />
+
+              <div className="section-divider" aria-hidden="true" />
+
+              {/* 8 · Contact & Messaging Form */}
               <Contact />
 
               {/* Footer */}
@@ -148,6 +154,7 @@ const Index = () => {
                 {activeView === 'experience' && <Experience />}
                 {activeView === 'education' && <Education />}
                 {activeView === 'achievements' && <Achievements />}
+                {activeView === 'testimonials' && <Testimonials />}
                 {activeView === 'contact' && <Contact />}
               </div>
 

@@ -12,7 +12,8 @@ const ROOMS = [
   { num: '04', label: 'Experience', id: 'experience'  },
   { num: '05', label: 'Education',  id: 'education'   },
   { num: '06', label: 'Awards',     id: 'achievements'},
-  { num: '07', label: 'Contact',    id: 'contact'     },
+  { num: '07', label: 'Reviews',    id: 'testimonials'},
+  { num: '08', label: 'Contact',    id: 'contact'     },
 ];
 
 const CONNECTIONS = [
